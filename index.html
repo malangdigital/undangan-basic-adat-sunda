@@ -38,6 +38,37 @@
         }
 
         /* Tombol Umum */
+        /* === TOMBOL MUSIC MENGAMBANG === */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: var(--warna-utama);
+            border: 1px solid var(--warna-aksen);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 9999;
+            color: var(--warna-aksen);
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+        /* Animasi berputar saat lagu menyala */
+        .music-btn.playing {
+            animation: spin 4s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
         .btn {
             display: inline-block;
             padding: 12px 30px;
@@ -160,6 +191,11 @@
         }
 
         /* === 3. PROFIL PENGANTIN === */
+        #couple {
+            background-color: #F5F0E1; /* UBAH KODE WARNA INI SESUAI KEINGINAN */
+            position: relative;
+        }
+
         .couple-container {
             display: flex;
             flex-wrap: wrap;
@@ -355,6 +391,16 @@
     </style>
 </head>
 <body>
+    <!-- TOMBOL MUSIC MENGAMBANG (POJOK KANAN ATAS) -->
+    <div class="music-btn" id="musicBtn" onclick="toggleMusic()" style="display: none;">
+        &#9835; <!-- Simbol Nada -->
+    </div>
+
+    <!-- ASET AUDIO: Ganti src dengan file lagu Anda di folder assets -->
+    <audio id="bgMusic" loop>
+        <source src="assets/lagu.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung audio.
+    </audio>
 
     <!-- ====================================== -->
     <!-- 1. SECTION: HALAMAN COVER / PEMBUKA     -->
@@ -514,11 +560,29 @@
         // PENTING: Ganti URL di bawah dengan Web App URL dari Google Apps Script Anda
         const GOOGLE_SCRIPT_URL = "MASUKKAN_URL_GOOGLE_APPS_SCRIPT_DISINI";
 
-        // 1. Fungsi Buka Undangan
+        // 1. Fungsi Buka Undangan & Play Music Otomatis
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+
         function openInvitation() {
             document.getElementById('cover').style.display = 'none';
             document.getElementById('quote').scrollIntoView({ behavior: 'smooth' });
-            // Bisa tambahkan script untuk play musik di sini nantinya
+            
+            // Tampilkan tombol music dan langsung putar lagunya
+            musicBtn.style.display = "flex";
+            music.play();
+            musicBtn.classList.add("playing");
+        }
+
+        // Fungsi Toggle (Matikan/Nyalakan Lagu)
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicBtn.classList.add("playing");
+            } else {
+                music.pause();
+                musicBtn.classList.remove("playing");
+            }
         }
 
         // 2. Countdown Timer Logika
