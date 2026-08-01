@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Aditya & Sekar</title>
+    
+    <!-- PENTING: Tempat memasukkan Font Google (Playfair Display & Montserrat) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* === PENGATURAN WARNA (PALET SUNDA ELEGAN) === */
+            --warna-utama: #1E3D2F; /* Hijau Zamrud Tua */
+            --warna-aksen: #C5A059; /* Emas / Gold */
+            --warna-dasar: #FDFBF7; /* Krem / Off-white */
+            --warna-teks: #2C2C2C;  /* Abu-abu gelap untuk teks */
+            
+            /* === PENGATURAN FONT === */
+            --font-judul: 'Playfair Display', serif;
+            --font-tubuh: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-tubuh);
+            background-color: var(--warna-dasar);
+            color: var(--warna-teks);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Tombol Umum */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--warna-utama);
+            color: var(--warna-dasar);
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid var(--warna-aksen);
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--warna-utama);
+        }
+
+        /* === BINGKAI / ORNAMEN TEKS === */
+        .section-divider {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--warna-aksen);
+            font-size: 24px;
+        }
+
+        /* === STRUKTUR HALAMAN === */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: var(--font-judul);
+            color: var(--warna-utama);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: var(--warna-aksen);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        /* === CARA MEMASANG ORNAMEN LATAR (WATERMARK) === */
+        .bg-ornament {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url(''); /* Kosongkan dulu, isi nanti jika ada PNG */
+            background-size: 300px;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .content-zindex {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === 1. HALAMAN COVER === */
+        #cover {
+            /* GANTI URL DI BAWAH DENGAN URL FOTO PREWEDDING ANDA */
+            background-image: url('adit&sekar.png'); 
+            background-size: cover;
+            background-position: center;
+            color: var(--warna-dasar);
+        }
+
+        #cover::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(30, 61, 47, 0.7); /* Overlay hijau gelap */
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cover-content h1 {
+            font-family: var(--font-judul);
+            font-size: 3.5rem;
+            margin: 10px 0;
+            font-weight: 700;
+            color: var(--warna-dasar);
+        }
+
+        .cover-content .ampersand {
+            color: var(--warna-aksen);
+            font-style: italic;
+        }
+
+        .cover-content p {
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+        
+        .cover-content .intro-text {
+            font-family: var(--font-judul);
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--warna-aksen);
+            margin-bottom: 10px;
+        }
+
+        /* === 3. PROFIL PENGANTIN === */
+        .couple-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 20px;
+        }
+
+        .couple-profile {
+            width: 300px;
+        }
+
+        .couple-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 3px solid var(--warna-aksen);
+        }
+
+        .couple-profile h3 {
+            font-family: var(--font-judul);
+            font-size: 1.8rem;
+            color: var(--warna-utama);
+            margin-bottom: 5px;
+        }
+
+        .couple-profile p {
+            font-size: 0.9rem;
+            color: var(--warna-teks);
+        }
+
+        /* === 4. DETAIL ACARA & COUNTDOWN === */
+        #event {
+            background-color: #fff;
+        }
+
+        .event-card {
+            background-color: var(--warna-dasar);
+            border: 1px solid var(--warna-aksen);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative; /* Agar corner ornamen bisa menempel di pojok */
+        }
+
+        /* CSS untuk Ornamen Pojok (Corner) */
+        .card-corner {
+            position: absolute;
+            width: 50px; /* Ukuran ideal corner */
+            height: 50px;
+            object-fit: contain;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .corner-tl { top: 0px; left: 0px; }
+        .corner-tr { top: 0px; right: 0px; transform: scaleX(-1); } /* Flipped horizontal */
+        .corner-bl { bottom: 0px; left: 0px; transform: scaleY(-1); } /* Flipped vertical */
+        .corner-br { bottom: 0px; right: 0px; transform: scale(-1, -1); } /* Flipped both */
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .countdown-item {
+            background-color: var(--warna-utama);
+            color: var(--warna-dasar);
+            padding: 15px;
+            border-radius: 8px;
+            min-width: 70px;
+        }
+
+        .countdown-item span {
+            display: block;
+            font-family: var(--font-judul);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .countdown-item label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-detail h4 {
+            font-family: var(--font-judul);
+            color: var(--warna-utama);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .event-detail p {
+            margin-bottom: 20px;
+        }
+
+        /* === 6. RSVP & FOOTER === */
+        #rsvp {
+            background-color: var(--warna-utama);
+            color: var(--warna-dasar);
+        }
+
+        #rsvp .section-title, #rsvp .section-subtitle {
+            color: var(--warna-dasar);
+        }
+
+        .rsvp-form {
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .rsvp-form input, .rsvp-form select, .rsvp-form textarea {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid var(--warna-aksen);
+            background-color: var(--warna-dasar);
+            color: var(--warna-teks);
+            font-family: var(--font-tubuh);
+        }
+
+        .rsvp-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        #comment-list {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+
+        .comment-item {
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 0;
+        }
+
+        .comment-item strong {
+            color: var(--warna-aksen);
+        }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        footer h2 {
+            font-family: var(--font-judul);
+            font-size: 1.8rem;
+        }
+
+        footer p {
+            font-family: var(--font-tubuh);
+            font-size: 0.8rem;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Animasi Fade In saat Scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .cover-content h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .countdown-timer { gap: 10px; }
+            .countdown-item { min-width: 60px; padding: 10px; }
+            .card-corner { width: 100px; height: 100px; } /* Pojok mengecil di HP */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====================================== -->
+    <!-- 1. SECTION: HALAMAN COVER / PEMBUKA     -->
+    <!-- ====================================== -->
+    <section id="cover">
+        <div class="cover-content">
+            <!-- ASET: Ornamen di atas halaman cover -->
+            <img src="dove.png" alt="Ornamen Atas Cover" style="width: 120px; margin-bottom: 10px;">
+            
+            <p class="intro-text">The Wedding of</p>
+            
+            <h1>Aditya <span class="ampersand">&</span> Sekar</h1>
+            
+            <p>KAMIS, 1 APRIL 2027</p>
+            
+            <!-- ASET: Ornamen Divider antara tanggal dan Kepada Yth -->
+            <img src="divider-cover.png" alt="Ornamen Divider" style="width: 300px; margin: 10px 0;">
+            
+            <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+            
+            <br>
+            <button class="btn" onclick="openInvitation()">Buka Undangan</button>
+        </div>
+    </section>
+
+    <!-- ====================================== -->
+    <!-- 2. SECTION: KUTIPAN                     -->
+    <!-- ====================================== -->
+    <section id="quote" class="fade-in">
+        <!-- ASET: Ornamen batik Sunda sebagai pembatas atas -->
+        <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-bottom: 20px; opacity: 0.8;">
+        
+        <div style="max-width: 600px;" class="content-zindex">
+            <p style="font-style: italic; font-size: 1.1rem;">"Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."</p>
+            <br>
+            <p style="font-weight: 600; color: var(--warna-aksen);">Q.S. Ar-Rum: 21</p>
+        </div>
+
+        <!-- ASET: Ornamen batik Sunda sebagai pembatas bawah (diputar 180 derajat) -->
+        <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-top: 20px; opacity: 0.8; transform: rotate(180deg);">
+    </section>
+
+    <!-- ====================================== -->
+    <!-- 3. SECTION: PROFIL PENGANTIN            -->
+    <!-- ====================================== -->
+    <section id="couple" class="fade-in">
+        <!-- Watermark Ornamen Sunda di latar belakang -->
+        <div class="bg-ornament"></div>
+
+        <div class="content-zindex">
+            <h2 class="section-title">Mempelai</h2>
+            <p class="section-subtitle">Pasangan Bahagia</p>
+            
+            <div class="couple-container">
+                <!-- Profil Cowok -->
+                <div class="couple-profile">
+                    <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Aditya -->
+                    <img src="adit.png" alt="Aditya" class="couple-img">
+                    <h3>Aditya Permana, S.E.</h3>
+                    <p>Putra dari Bapak [Nama Bapak Aditya]<br>& Ibu [Nama Ibu Aditya]</p>
+                </div>
+                
+                <!-- Profil Cewek -->
+                <div class="couple-profile">
+                    <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Sekar -->
+                    <img src="sekar.png" alt="Sekar" class="couple-img">
+                    <h3>Sekar Asih, S.Ak.</h3>
+                    <p>Putri dari Bapak [Nama Bapak Sekar]<br>& Ibu [Nama Ibu Sekar]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================== -->
+    <!-- 4. SECTION: DETAIL ACARA & COUNTDOWN    -->
+    <!-- ====================================== -->
+    <section id="event" class="fade-in">
+        <!-- ASET: Ornamen di atas judul card -->
+        <img src="ornamen-atas-cover.png" alt="Ornamen Atas Judul" style="width: 200px; margin-bottom: 10px;">
+        
+        <h2 class="section-title">Save The Date</h2>
+        <p class="section-subtitle">Rangkaian Acara</p>
+        
+        <div class="event-card">
+            <!-- ASET: 4 Ornamen untuk pojok card (Sisi kiri atas) -->
+            <img src="corner.png" alt="Corner" class="card-corner corner-tl">
+            <!-- Sisi kanan atas (otomatis dibalik oleh CSS) -->
+            <img src="corner.png" alt="Corner" class="card-corner corner-tr">
+            <!-- Sisi kiri bawah (otomatis dibalik oleh CSS) -->
+            <img src="corner.png" alt="Corner" class="card-corner corner-bl">
+            <!-- Sisi kanan bawah (otomatis dibalik oleh CSS) -->
+            <img src="corner.png" alt="Corner" class="card-corner corner-br">
+
+            <!-- Countdown Timer -->
+            <div class="countdown-timer" id="countdown" style="position: relative; z-index: 3;">
+                <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
+                <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
+                <div class="countdown-item"><span id="minutes">00</span><label>Menit</label></div>
+                <div class="countdown-item"><span id="seconds">00</span><label>Detik</label></div>
+            </div>
+
+            <div class="event-detail" style="position: relative; z-index: 3;">
+                <h4>Akad Nikah</h4>
+                <p>Kamis, 1 April 2027<br>08.00 - 10.00 WIB</p>
+                
+                <div style="border-top: 1px dashed var(--warna-aksen); margin: 20px 0;"></div>
+                
+                <h4>Resepsi</h4>
+                <p>Kamis, 1 April 2027<br>11.00 - 16.00 WIB</p>
+                
+                <h4 style="margin-top: 20px;">Hotel Grand Mercure</h4>
+                <p>[Nama Ballroom/Ruang], [Kota]<br>
+                <a href="https://maps.google.com/?q=Hotel+Grand+Mercure" target="_blank" class="btn" style="margin-top: 15px; padding: 8px 20px; font-size: 0.9rem;">Lihat Lokasi</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================== -->
+    <!-- 5. SECTION: RSVP & FOOTER (LANGSUNG PENUTUP) -->
+    <!-- ====================================== -->
+    <section id="rsvp" class="fade-in">
+        <h2 class="section-title">Ucapan & Doa</h2>
+        <p class="section-subtitle">Wilujeng Sumping</p>
+        
+        <form class="rsvp-form" onsubmit="submitRSVP(event)">
+            <input type="text" id="nama" placeholder="Nama Anda" required>
+            <select id="kehadiran" required>
+                <option value="">Konfirmasi Kehadiran</option>
+                <option value="Hadir">Insya Allah Hadir</option>
+                <option value="Tidak Hadir">Mohon maaf belum bisa hadir</option>
+            </select>
+            <textarea id="pesan" placeholder="Tulis ucapan dan doa terbaik Anda..." required></textarea>
+            <button type="submit" class="btn" style="background-color: var(--warna-aksen); border-color: var(--warna-dasar);">Kirim Ucapan</button>
+        </form>
+
+        <!-- Tempat menampilkan data dari Google Sheets -->
+        <div id="comment-list">
+            <p style="text-align: center; font-size: 0.8rem; opacity: 0.7;">Memuat ucapan...</p>
+        </div>
+
+        <!-- ASET: Ornamen di atas nama mempelai (bagian bawah undangan) -->
+        <img src="ornamen-bawah.png" alt="Ornamen Penutup" style="width: 100px; margin-top: 50px; margin-bottom: 0px; opacity: 0.9;">
+
+        <!-- FOOTER PENUTUP -->
+        <footer>
+            <h2>Aditya & Sekar</h2>
+            <p>Hatur nuhun pisan atas doa dan kehadirannya.</p>
+            <p style="margin-top: 15px; opacity: 0.6; font-size: 0.7rem;">created with love by malangdigital.com</p>
+        </footer>
+    </section>
+
+    <!-- ====================================== -->
+    <!-- JAVASCRIPT: LOGIKA UNDANGAN             -->
+    <!-- ====================================== -->
+    <script>
+        // PENTING: Ganti URL di bawah dengan Web App URL dari Google Apps Script Anda
+        const GOOGLE_SCRIPT_URL = "MASUKKAN_URL_GOOGLE_APPS_SCRIPT_DISINI";
+
+        // 1. Fungsi Buka Undangan
+        function openInvitation() {
+            document.getElementById('cover').style.display = 'none';
+            document.getElementById('quote').scrollIntoView({ behavior: 'smooth' });
+            // Bisa tambahkan script untuk play musik di sini nantinya
+        }
+
+        // 2. Countdown Timer Logika
+        const targetDate = new Date("April 1, 2027 08:00:00+07:00").getTime();
+
+        const countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdown').innerHTML = "<p>Acara sedang berlangsung!</p>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+        }, 1000);
+
+        // 3. Animasi Fade In saat Scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+        // 4. Logika Google Sheet (POST & GET)
+        function submitRSVP(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Mengirim...";
+            btn.disabled = true;
+
+            const data = {
+                nama: document.getElementById('nama').value,
+                kehadiran: document.getElementById('kehadiran').value,
+                pesan: document.getElementById('pesan').value
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                alert('Terima kasih! Ucapan Anda telah terkirim.');
+                document.querySelector('.rsvp-form').reset();
+                btn.innerText = "Kirim Ucapan";
+                btn.disabled = false;
+                fetchComments(); 
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Maaf, terjadi kesalahan. Coba lagi nanti.');
+                btn.innerText = "Kirim Ucapan";
+                btn.disabled = false;
+            });
+        }
+
+        // Fungsi tarik data RSVP (GET)
+        function fetchComments() {
+            fetch(GOOGLE_SCRIPT_URL)
+            .then(response => response.json())
+            .then(data => {
+                const commentList = document.getElementById('comment-list');
+                if(data.length === 0) {
+                    commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Jadilah yang pertama mengucapkan selamat!</p>";
+                    return;
+                }
+                
+                commentList.innerHTML = data.reverse().map(item => `
+                    <div class="comment-item">
+                        <strong>${item.nama}</strong> <span style="font-size:0.7rem; opacity:0.7;">(${item.kehadiran})</span>
+                        <p style="margin-top:5px; font-size:0.9rem;">${item.pesan}</p>
+                    </div>
+                `).join('');
+            })
+            .catch(error => {
+                console.error('Error fetching comments:', error);
+                document.getElementById('comment-list').innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Belum ada ucapan.</p>";
+            });
+        }
+
+        // Panggil komentar saat halaman pertama kali dimuat
+        window.onload = fetchComments;
+
+    </script>
+</body>
+</html>
