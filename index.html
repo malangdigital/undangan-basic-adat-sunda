@@ -31,18 +31,30 @@
 
         body {
             font-family: var(--font-tubuh);
-            background-color: var(--warna-dasar);
+            background-color: #e2e8f0; /* Warna abu-abu di luar frame mobile */
             color: var(--warna-teks);
             line-height: 1.6;
             overflow-x: hidden;
+            display: flex;
+            justify-content: center;
         }
 
-        /* Tombol Umum */
+        /* Kunci tampilan agar selalu mobile (Max Width 480px) */
+        #mobileFrame {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--warna-dasar);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
         /* === TOMBOL MUSIC MENGAMBANG === */
         .music-btn {
             position: fixed;
             top: 20px;
-            right: 20px;
+            right: max(20px, calc(50% - 240px + 20px)); /* Kunci rapat di kanan frame 480px */
             width: 45px;
             height: 45px;
             background-color: var(--warna-utama);
@@ -61,14 +73,8 @@
         .music-btn:hover {
             transform: scale(1.1);
         }
-        /* Animasi berputar saat lagu menyala */
-        .music-btn.playing {
-            animation: spin 4s linear infinite;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+
+        /* Tombol Umum */
         .btn {
             display: inline-block;
             padding: 12px 30px;
@@ -142,6 +148,23 @@
 
         /* === 1. HALAMAN COVER === */
         #cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 1s ease-in-out;
+            overflow: hidden;
+            
             /* GANTI URL DI BAWAH DENGAN URL FOTO PREWEDDING ANDA */
             background-image: url('adit&sekar.png'); 
             background-size: cover;
@@ -162,6 +185,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 0 20px;
         }
 
         .cover-content h1 {
@@ -391,167 +415,173 @@
     </style>
 </head>
 <body>
-    <!-- TOMBOL MUSIC MENGAMBANG (POJOK KANAN ATAS) -->
-    <div class="music-btn" id="musicBtn" onclick="toggleMusic()" style="display: none;">
-        &#9835; <!-- Simbol Nada -->
-    </div>
 
-    <!-- ASET AUDIO: Ganti src dengan file lagu Anda di folder assets -->
-    <audio id="bgMusic" loop>
-        <source src="Jangan Berhenti Mencintaiku.mp3" type="audio/mpeg">
-        Browser Anda tidak mendukung audio.
-    </audio>
+    <!-- FRAME MOBILE VIEW -->
+    <div id="mobileFrame">
 
-    <!-- ====================================== -->
-    <!-- 1. SECTION: HALAMAN COVER / PEMBUKA     -->
-    <!-- ====================================== -->
-    <section id="cover">
-        <div class="cover-content">
-            <!-- ASET: Ornamen di atas halaman cover -->
-            <img src="dove.png" alt="Ornamen Atas Cover" style="width: 120px; margin-bottom: 10px;">
-            
-            <p class="intro-text">The Wedding of</p>
-            
-            <h1>Aditya <span class="ampersand">&</span> Sekar</h1>
-            
-            <p>KAMIS, 1 APRIL 2027</p>
-            
-            <!-- ASET: Ornamen Divider antara tanggal dan Kepada Yth -->
-            <img src="divider-cover.png" alt="Ornamen Divider" style="width: 300px; margin: 10px 0;">
-            
-            <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
-            
-            <br>
-            <button class="btn" onclick="openInvitation()">Buka Undangan</button>
-        </div>
-    </section>
-
-    <!-- ====================================== -->
-    <!-- 2. SECTION: KUTIPAN                     -->
-    <!-- ====================================== -->
-    <section id="quote" class="fade-in">
-        <!-- ASET: Ornamen batik Sunda sebagai pembatas atas -->
-        <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-bottom: 20px; opacity: 0.8;">
-        
-        <div style="max-width: 600px;" class="content-zindex">
-            <p style="font-style: italic; font-size: 1.1rem;">"Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."</p>
-            <br>
-            <p style="font-weight: 600; color: var(--warna-aksen);">Q.S. Ar-Rum: 21</p>
+        <!-- TOMBOL MUSIC MENGAMBANG (POJOK KANAN ATAS) -->
+        <div class="music-btn" id="musicBtn" onclick="toggleMusic()" style="display: none;">
+            &#9835; <!-- Simbol Nada -->
         </div>
 
-        <!-- ASET: Ornamen batik Sunda sebagai pembatas bawah (diputar 180 derajat) -->
-        <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-top: 20px; opacity: 0.8; transform: rotate(180deg);">
-    </section>
+        <!-- ASET AUDIO: Ganti src dengan file lagu Anda di folder assets -->
+        <audio id="bgMusic" loop>
+            <source src="Jangan Berhenti Mencintaiku.mp3" type="audio/mpeg">
+            Browser Anda tidak mendukung audio.
+        </audio>
 
-    <!-- ====================================== -->
-    <!-- 3. SECTION: PROFIL PENGANTIN            -->
-    <!-- ====================================== -->
-    <section id="couple" class="fade-in">
-        <!-- Watermark Ornamen Sunda di latar belakang -->
-        <div class="bg-ornament"></div>
+        <!-- ====================================== -->
+        <!-- 1. SECTION: HALAMAN COVER / PEMBUKA     -->
+        <!-- ====================================== -->
+        <section id="cover">
+            <div class="cover-content">
+                <!-- ASET: Ornamen di atas halaman cover -->
+                <img src="dove.png" alt="Ornamen Atas Cover" style="width: 120px; margin-bottom: 10px;">
+                
+                <p class="intro-text">The Wedding of</p>
+                
+                <h1>Aditya <span class="ampersand">&</span> Sekar</h1>
+                
+                <p>KAMIS, 1 APRIL 2027</p>
+                
+                <!-- ASET: Ornamen Divider antara tanggal dan Kepada Yth -->
+                <img src="divider-cover.png" alt="Ornamen Divider" style="width: 300px; margin: 10px 0;">
+                
+                <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                
+                <br>
+                <button class="btn" onclick="openInvitation()">Buka Undangan</button>
+            </div>
+        </section>
 
-        <div class="content-zindex">
-            <h2 class="section-title">Mempelai</h2>
-            <p class="section-subtitle">Pasangan Bahagia</p>
+        <!-- ====================================== -->
+        <!-- 2. SECTION: KUTIPAN                     -->
+        <!-- ====================================== -->
+        <section id="quote" class="fade-in">
+            <!-- ASET: Ornamen batik Sunda sebagai pembatas atas -->
+            <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-bottom: 20px; opacity: 0.8;">
             
-            <div class="couple-container">
-                <!-- Profil Cowok -->
-                <div class="couple-profile">
-                    <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Aditya -->
-                    <img src="adit.png" alt="Aditya" class="couple-img">
-                    <h3>Aditya Permana, S.E.</h3>
-                    <p>Putra dari Bapak [Nama Bapak Aditya]<br>& Ibu [Nama Ibu Aditya]</p>
+            <div style="max-width: 600px;" class="content-zindex">
+                <p style="font-style: italic; font-size: 1.1rem;">"Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."</p>
+                <br>
+                <p style="font-weight: 600; color: var(--warna-aksen);">Q.S. Ar-Rum: 21</p>
+            </div>
+
+            <!-- ASET: Ornamen batik Sunda sebagai pembatas bawah (diputar 180 derajat) -->
+            <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-top: 20px; opacity: 0.8; transform: rotate(180deg);">
+        </section>
+
+        <!-- ====================================== -->
+        <!-- 3. SECTION: PROFIL PENGANTIN            -->
+        <!-- ====================================== -->
+        <section id="couple" class="fade-in">
+            <!-- Watermark Ornamen Sunda di latar belakang -->
+            <div class="bg-ornament"></div>
+
+            <div class="content-zindex">
+                <h2 class="section-title">Mempelai</h2>
+                <p class="section-subtitle">Pasangan Bahagia</p>
+                
+                <div class="couple-container">
+                    <!-- Profil Cowok -->
+                    <div class="couple-profile">
+                        <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Aditya -->
+                        <img src="adit.png" alt="Aditya" class="couple-img">
+                        <h3>Aditya Permana, S.E.</h3>
+                        <p>Putra dari Bapak [Nama Bapak Aditya]<br>& Ibu [Nama Ibu Aditya]</p>
+                    </div>
+                    
+                    <!-- Profil Cewek -->
+                    <div class="couple-profile">
+                        <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Sekar -->
+                        <img src="sekar.png" alt="Sekar" class="couple-img">
+                        <h3>Sekar Asih, S.Ak.</h3>
+                        <p>Putri dari Bapak [Nama Bapak Sekar]<br>& Ibu [Nama Ibu Sekar]</p>
+                    </div>
                 </div>
-                
-                <!-- Profil Cewek -->
-                <div class="couple-profile">
-                    <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Sekar -->
-                    <img src="sekar.png" alt="Sekar" class="couple-img">
-                    <h3>Sekar Asih, S.Ak.</h3>
-                    <p>Putri dari Bapak [Nama Bapak Sekar]<br>& Ibu [Nama Ibu Sekar]</p>
+            </div>
+        </section>
+
+        <!-- ====================================== -->
+        <!-- 4. SECTION: DETAIL ACARA & COUNTDOWN    -->
+        <!-- ====================================== -->
+        <section id="event" class="fade-in">
+            <!-- ASET: Ornamen di atas judul card -->
+            <img src="ornamen-atas-cover.png" alt="Ornamen Atas Judul" style="width: 200px; margin-bottom: 10px;">
+            
+            <h2 class="section-title">Save The Date</h2>
+            <p class="section-subtitle">Rangkaian Acara</p>
+            
+            <div class="event-card">
+                <!-- ASET: 4 Ornamen untuk pojok card (Sisi kiri atas) -->
+                <img src="corner.png" alt="Corner" class="card-corner corner-tl">
+                <!-- Sisi kanan atas (otomatis dibalik oleh CSS) -->
+                <img src="corner.png" alt="Corner" class="card-corner corner-tr">
+                <!-- Sisi kiri bawah (otomatis dibalik oleh CSS) -->
+                <img src="corner.png" alt="Corner" class="card-corner corner-bl">
+                <!-- Sisi kanan bawah (otomatis dibalik oleh CSS) -->
+                <img src="corner.png" alt="Corner" class="card-corner corner-br">
+
+                <!-- Countdown Timer -->
+                <div class="countdown-timer" id="countdown" style="position: relative; z-index: 3;">
+                    <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
+                    <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
+                    <div class="countdown-item"><span id="minutes">00</span><label>Menit</label></div>
+                    <div class="countdown-item"><span id="seconds">00</span><label>Detik</label></div>
+                </div>
+
+                <div class="event-detail" style="position: relative; z-index: 3;">
+                    <h4>Akad Nikah</h4>
+                    <p>Kamis, 1 April 2027<br>08.00 - 10.00 WIB</p>
+                    
+                    <div style="border-top: 1px dashed var(--warna-aksen); margin: 20px 0;"></div>
+                    
+                    <h4>Resepsi</h4>
+                    <p>Kamis, 1 April 2027<br>11.00 - 16.00 WIB</p>
+                    
+                    <h4 style="margin-top: 20px;">Hotel Grand Mercure</h4>
+                    <p>[Nama Ballroom/Ruang], [Kota]<br>
+                    <a href="https://maps.google.com/?q=Hotel+Grand+Mercure" target="_blank" class="btn" style="margin-top: 15px; padding: 8px 20px; font-size: 0.9rem;">Lihat Lokasi</a>
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ====================================== -->
-    <!-- 4. SECTION: DETAIL ACARA & COUNTDOWN    -->
-    <!-- ====================================== -->
-    <section id="event" class="fade-in">
-        <!-- ASET: Ornamen di atas judul card -->
-        <img src="ornamen-atas-cover.png" alt="Ornamen Atas Judul" style="width: 200px; margin-bottom: 10px;">
-        
-        <h2 class="section-title">Save The Date</h2>
-        <p class="section-subtitle">Rangkaian Acara</p>
-        
-        <div class="event-card">
-            <!-- ASET: 4 Ornamen untuk pojok card (Sisi kiri atas) -->
-            <img src="corner.png" alt="Corner" class="card-corner corner-tl">
-            <!-- Sisi kanan atas (otomatis dibalik oleh CSS) -->
-            <img src="corner.png" alt="Corner" class="card-corner corner-tr">
-            <!-- Sisi kiri bawah (otomatis dibalik oleh CSS) -->
-            <img src="corner.png" alt="Corner" class="card-corner corner-bl">
-            <!-- Sisi kanan bawah (otomatis dibalik oleh CSS) -->
-            <img src="corner.png" alt="Corner" class="card-corner corner-br">
+        <!-- ====================================== -->
+        <!-- 5. SECTION: RSVP & FOOTER (LANGSUNG PENUTUP) -->
+        <!-- ====================================== -->
+        <section id="rsvp" class="fade-in">
+            <h2 class="section-title">Ucapan & Doa</h2>
+            <p class="section-subtitle">Wilujeng Sumping</p>
+            
+            <form class="rsvp-form" onsubmit="submitRSVP(event)">
+                <input type="text" id="nama" placeholder="Nama Anda" required>
+                <select id="kehadiran" required>
+                    <option value="">Konfirmasi Kehadiran</option>
+                    <option value="Hadir">Insya Allah Hadir</option>
+                    <option value="Tidak Hadir">Mohon maaf belum bisa hadir</option>
+                </select>
+                <textarea id="pesan" placeholder="Tulis ucapan dan doa terbaik Anda..." required></textarea>
+                <button type="submit" class="btn" style="background-color: var(--warna-aksen); border-color: var(--warna-dasar);">Kirim Ucapan</button>
+            </form>
 
-            <!-- Countdown Timer -->
-            <div class="countdown-timer" id="countdown" style="position: relative; z-index: 3;">
-                <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
-                <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
-                <div class="countdown-item"><span id="minutes">00</span><label>Menit</label></div>
-                <div class="countdown-item"><span id="seconds">00</span><label>Detik</label></div>
+            <!-- Tempat menampilkan data dari Google Sheets -->
+            <div id="comment-list">
+                <p style="text-align: center; font-size: 0.8rem; opacity: 0.7;">Memuat ucapan...</p>
             </div>
 
-            <div class="event-detail" style="position: relative; z-index: 3;">
-                <h4>Akad Nikah</h4>
-                <p>Kamis, 1 April 2027<br>08.00 - 10.00 WIB</p>
-                
-                <div style="border-top: 1px dashed var(--warna-aksen); margin: 20px 0;"></div>
-                
-                <h4>Resepsi</h4>
-                <p>Kamis, 1 April 2027<br>11.00 - 16.00 WIB</p>
-                
-                <h4 style="margin-top: 20px;">Hotel Grand Mercure</h4>
-                <p>[Nama Ballroom/Ruang], [Kota]<br>
-                <a href="https://maps.google.com/?q=Hotel+Grand+Mercure" target="_blank" class="btn" style="margin-top: 15px; padding: 8px 20px; font-size: 0.9rem;">Lihat Lokasi</a>
-                </p>
-            </div>
-        </div>
-    </section>
+            <!-- ASET: Ornamen di atas nama mempelai (bagian bawah undangan) -->
+            <img src="ornamen-bawah.png" alt="Ornamen Penutup" style="width: 100px; margin-top: 50px; margin-bottom: 0px; opacity: 0.9;">
 
-    <!-- ====================================== -->
-    <!-- 5. SECTION: RSVP & FOOTER (LANGSUNG PENUTUP) -->
-    <!-- ====================================== -->
-    <section id="rsvp" class="fade-in">
-        <h2 class="section-title">Ucapan & Doa</h2>
-        <p class="section-subtitle">Wilujeng Sumping</p>
-        
-        <form class="rsvp-form" onsubmit="submitRSVP(event)">
-            <input type="text" id="nama" placeholder="Nama Anda" required>
-            <select id="kehadiran" required>
-                <option value="">Konfirmasi Kehadiran</option>
-                <option value="Hadir">Insya Allah Hadir</option>
-                <option value="Tidak Hadir">Mohon maaf belum bisa hadir</option>
-            </select>
-            <textarea id="pesan" placeholder="Tulis ucapan dan doa terbaik Anda..." required></textarea>
-            <button type="submit" class="btn" style="background-color: var(--warna-aksen); border-color: var(--warna-dasar);">Kirim Ucapan</button>
-        </form>
+            <!-- FOOTER PENUTUP -->
+            <footer>
+                <h2>Aditya & Sekar</h2>
+                <p>Hatur nuhun pisan atas doa dan kehadirannya.</p>
+                <p style="margin-top: 15px; opacity: 0.6; font-size: 0.7rem;">created with love by malangdigital.com</p>
+            </footer>
+        </section>
 
-        <!-- Tempat menampilkan data dari Google Sheets -->
-        <div id="comment-list">
-            <p style="text-align: center; font-size: 0.8rem; opacity: 0.7;">Memuat ucapan...</p>
-        </div>
-
-        <!-- ASET: Ornamen di atas nama mempelai (bagian bawah undangan) -->
-        <img src="ornamen-bawah.png" alt="Ornamen Penutup" style="width: 100px; margin-top: 50px; margin-bottom: 0px; opacity: 0.9;">
-
-        <!-- FOOTER PENUTUP -->
-        <footer>
-            <h2>Aditya & Sekar</h2>
-            <p>Hatur nuhun pisan atas doa dan kehadirannya.</p>
-            <p style="margin-top: 15px; opacity: 0.6; font-size: 0.7rem;">created with love by malangdigital.com</p>
-        </footer>
-    </section>
+    </div> <!-- End Mobile Frame -->
 
     <!-- ====================================== -->
     <!-- JAVASCRIPT: LOGIKA UNDANGAN             -->
@@ -565,23 +595,28 @@
         const musicBtn = document.getElementById('musicBtn');
 
         function openInvitation() {
-            document.getElementById('cover').style.display = 'none';
-            document.getElementById('quote').scrollIntoView({ behavior: 'smooth' });
+            const cover = document.getElementById('cover');
             
-            // Tampilkan tombol music dan langsung putar lagunya
-            musicBtn.style.display = "flex";
-            music.play();
-            musicBtn.classList.add("playing");
+            // Animasi Cover ke atas
+            cover.style.transform = "translateY(-100%)";
+            
+            // Tampilkan konten utama & mainkan musik
+            setTimeout(() => {
+                cover.style.display = 'none';
+                musicBtn.style.display = "flex";
+                music.play();
+                musicBtn.innerHTML = "&#10074;&#10074;"; // Ganti simbol jadi Pause
+            }, 1000);
         }
 
         // Fungsi Toggle (Matikan/Nyalakan Lagu)
         function toggleMusic() {
             if (music.paused) {
                 music.play();
-                musicBtn.classList.add("playing");
+                musicBtn.innerHTML = "&#10074;&#10074;"; // Simbol Pause
             } else {
                 music.pause();
-                musicBtn.classList.remove("playing");
+                musicBtn.innerHTML = "&#9835;"; // Simbol Nada (Play)
             }
         }
 
@@ -621,63 +656,87 @@
         document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
 
         // 4. Logika Google Sheet (POST & GET)
-        function submitRSVP(e) {
+        async function submitRSVP(e) {
             e.preventDefault();
             const btn = e.target.querySelector('button');
             btn.innerText = "Mengirim...";
             btn.disabled = true;
 
+            // Mengirim variabel 'ucapan' agar cocok dengan Google Script Anda
             const data = {
                 nama: document.getElementById('nama').value,
                 kehadiran: document.getElementById('kehadiran').value,
-                pesan: document.getElementById('pesan').value
+                ucapan: document.getElementById('pesan').value
             };
 
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                alert('Terima kasih! Ucapan Anda telah terkirim.');
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                // Tampilkan langsung ke layar (Local DOM)
+                addCommentToDOM(data);
+                
                 document.querySelector('.rsvp-form').reset();
                 btn.innerText = "Kirim Ucapan";
                 btn.disabled = false;
+                
+                // Tarik ulang data dari Server untuk memastikan urutan tersimpan
                 fetchComments(); 
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
                 alert('Maaf, terjadi kesalahan. Coba lagi nanti.');
                 btn.innerText = "Kirim Ucapan";
                 btn.disabled = false;
-            });
+            }
         }
 
-        // Fungsi tarik data RSVP (GET)
-        function fetchComments() {
-            fetch(GOOGLE_SCRIPT_URL)
-            .then(response => response.json())
-            .then(data => {
-                const commentList = document.getElementById('comment-list');
-                if(data.length === 0) {
+        function addCommentToDOM(data) {
+            const commentList = document.getElementById('comment-list');
+            const loadingText = commentList.querySelector('p');
+            if(loadingText) loadingText.remove();
+
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+            div.innerHTML = `
+                <strong>${data.nama}</strong> <span style="font-size:0.7rem; opacity:0.7;">(${data.kehadiran})</span>
+                <p style="margin-top:5px; font-size:0.9rem;">${data.ucapan}</p>
+            `;
+            commentList.prepend(div);
+        }
+
+        // Fungsi tarik data RSVP (GET) - Pintar membaca Object maupun Array
+        async function fetchComments() {
+            const commentList = document.getElementById('comment-list');
+            commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Memuat ucapan...</p>";
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const data = await response.json();
+                
+                if (!Array.isArray(data) || data.length === 0) {
                     commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Jadilah yang pertama mengucapkan selamat!</p>";
                     return;
                 }
                 
-                commentList.innerHTML = data.reverse().map(item => `
-                    <div class="comment-item">
-                        <strong>${item.nama}</strong> <span style="font-size:0.7rem; opacity:0.7;">(${item.kehadiran})</span>
-                        <p style="margin-top:5px; font-size:0.9rem;">${item.pesan}</p>
-                    </div>
-                `).join('');
-            })
-            .catch(error => {
+                commentList.innerHTML = "";
+                
+                data.forEach(item => {
+                    // Mendeteksi format Object { nama: "...", ucapan: "..." }
+                    const commentData = {
+                        nama: item.nama,
+                        kehadiran: item.kehadiran,
+                        ucapan: item.ucapan || item.pesan // Anticipation jika ada yang pakai 'pesan'
+                    };
+                    addCommentToDOM(commentData);
+                });
+            } catch (error) {
                 console.error('Error fetching comments:', error);
-                document.getElementById('comment-list').innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Belum ada ucapan.</p>";
-            });
+                commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Gagal memuat ucapan.</p>";
+            }
         }
 
         // Panggil komentar saat halaman pertama kali dimuat
