@@ -35,7 +35,7 @@
             color: var(--warna-teks);
             line-height: 1.6;
             width: 100%;
-            overflow-x: hidden; /* Mencegah scroll horizontal dari aset acak */
+            overflow: hidden; /* KUNCI: Body tidak bisa discroll saat cover muncul */
             -webkit-overflow-scrolling: touch;
         }
 
@@ -452,7 +452,9 @@
                 
                 <p class="intro-text">The Wedding of</p>
                 
-                <h1>Aditya <span class="ampersand">&</span> Sekar</h1>
+                <h1 style="font-size: 3.5rem; line-height: 1;">Aditya</h1>
+                <div class="ampersand" style="font-size: 3rem; margin: 5px 0;">&</div>
+                <h1 style="font-size: 3.5rem; line-height: 1;">Sekar</h1>
                 
                 <p>KAMIS, 1 APRIL 2027</p>
                 
@@ -631,6 +633,8 @@
         }
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
+            // Kunci scroll lagi saat halaman di-refresh
+            document.body.style.overflow = 'hidden';
             const cover = document.getElementById('cover');
             if (cover) {
                 cover.style.display = 'flex';
@@ -646,13 +650,23 @@
 
         function openInvitation() {
             const cover = document.getElementById('cover');
+            
+            // Buka kunci scroll body agar bisa scroll ke bawah
+            document.body.style.overflow = 'auto';
+            
+            // Paksa halaman kembali ke paling atas (Section Ayat)
+            window.scrollTo(0, 0);
+            
+            // Animasi Cover ke atas & pudar
             cover.style.transform = "translateY(-100%)";
             cover.style.opacity = "0";
+            
+            // Tampilkan konten utama & mainkan musik
             setTimeout(() => {
                 cover.style.display = 'none';
                 musicBtn.style.display = "flex";
                 music.play();
-                musicBtn.innerHTML = "&#10074;&#10074;";
+                musicBtn.innerHTML = "&#10074;&#10074;"; // Ganti simbol jadi Pause
             }, 1000);
         }
 
