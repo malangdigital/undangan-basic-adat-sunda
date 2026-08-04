@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tambahan viewport-fit=cover agar benar-benar full screen -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>Undangan Pernikahan Aditya & Sekar</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,15 +22,22 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* FIX TOTAL: Body dan HTML dikunci, tidak akan ada scroll window */
+        /* FIX TOTAL: Hilangkan semua pengaturan scroll yang mengunci window */
         html, body {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; 
+            margin: 0; 
+            padding: 0; 
+            width: 100%;
             font-family: var(--font-tubuh);
             background-color: #e2e8f0;
         }
 
-        /* HANYA Frame yang mengatur scroll */
+        /* Class untuk mengunci scroll HANYA saat cover ditampilkan */
+        body.locked {
+            overflow: hidden !important;
+            height: 100vh;
+            height: 100dvh;
+        }
+
         #mobileFrame {
             width: 100%;
             max-width: 480px;
@@ -37,15 +45,7 @@
             background-color: var(--warna-dasar);
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
             position: relative;
-            height: 100vh;
-            height: 100dvh;
-            overflow-x: hidden;
-            overflow-y: hidden; /* Defaultnya terkunci */
-            -webkit-overflow-scrolling: touch;
-        }
-        /* Class untuk membuka scroll */
-        #mobileFrame.unlocked {
-            overflow-y: auto;
+            /* Hapus height dan overflow Y, biarkan memanjang sesuai konten */
         }
 
         .music-btn {
@@ -181,6 +181,7 @@
             padding: 12px; border-radius: 5px; border: 1px solid var(--warna-aksen);
             background-color: var(--warna-dasar); color: var(--warna-teks); font-family: var(--font-tubuh);
         }
+        /* INI ADALAH SCROLLBAR YANG PENDEK (KOTAK UCAPAN) - INI NORMAL */
         #comment-list {
             margin-top: 30px; width: 100%; max-width: 500px; text-align: left;
             max-height: 200px; overflow-y: auto; padding: 10px;
@@ -198,7 +199,7 @@
         .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body>
+<body class="locked"> <!-- Body diberi class locked di awal -->
 
     <div id="mobileFrame">
 
@@ -324,12 +325,10 @@
     </div>
 
     <script>
-        const frame = document.getElementById('mobileFrame');
-
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.addEventListener('load', () => {
-            frame.scrollTop = 0; // Reset scroll frame ke atas
-            frame.classList.remove('unlocked'); // Kunci scroll frame saat di cover
+            window.scrollTo(0, 0); // Reset scroll window ke atas
+            document.body.classList.add('locked'); // Kunci scroll body saat di cover
             const cover = document.getElementById('cover');
             if (cover) {
                 cover.style.display = 'flex';
@@ -346,8 +345,8 @@
         function openInvitation() {
             const cover = document.getElementById('cover');
             
-            frame.classList.add('unlocked'); // Buka kunci scroll frame
-            frame.scrollTop = 0; // Paksa frame mulai dari atas (Section Ayat)
+            document.body.classList.remove('locked'); // Buka kunci scroll body
+            window.scrollTo(0, 0); // Paksa window mulai dari atas (Section Ayat)
             
             cover.style.transform = "translateY(-100%)";
             cover.style.opacity = "0";
