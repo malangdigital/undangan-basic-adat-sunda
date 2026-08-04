@@ -693,7 +693,7 @@
             ucapanEmpty.classList.add('hidden');
             ucapanList.innerHTML = '';
 
-            fetch(GAS_URL)
+            fetch(GAS_URL + '?t=' + new Date().getTime())
                 .then(function(response) {
                     if (!response.ok) throw new Error('Gagal memuat');
                     return response.json();
