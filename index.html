@@ -29,14 +29,13 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
             font-family: var(--font-tubuh);
             background-color: #e2e8f0;
             color: var(--warna-teks);
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden; /* Pindah ke sini agar tidak bikin nested scroll */
+            width: 100%;
+            overflow-x: hidden; /* Mencegah scroll horizontal dari aset acak */
             -webkit-overflow-scrolling: touch;
         }
 
@@ -49,7 +48,7 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
             position: relative;
             min-height: 100vh;
-            /* HAPUS overflow & display flex dari sini agar tidak ada 2 scrollbar */
+            overflow: hidden; /* Memotong aset acak yang keluar batas frame */
         }
 
         /* === TOMBOL MUSIC MENGAMBANG === */
@@ -96,18 +95,10 @@
             color: var(--warna-utama);
         }
 
-        /* === BINGKAI / ORNAMEN TEKS === */
-        .section-divider {
-            text-align: center;
-            margin: 20px 0;
-            color: var(--warna-aksen);
-            font-size: 24px;
-        }
-
         /* === STRUKTUR HALAMAN === */
         section {
-            min-height: 100vh; /* Fallback untuk browser lama */
-            min-height: 100dvh; /* FIX BUG HP: Mencegah layar loncat saat address bar muncul/hilang */
+            min-height: 100vh;
+            min-height: 100dvh; /* Fix bug address bar HP */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -115,6 +106,7 @@
             padding: 60px 20px;
             text-align: center;
             position: relative;
+            overflow: hidden; /* Memotong aset acak secara lokal */
         }
 
         .section-title {
@@ -143,21 +135,10 @@
             pointer-events: none;
         }
 
-        /* === CARA MEMASANG ORNAMEN LATAR (WATERMARK) === */
-        .bg-ornament {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: 300px;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.05;
-            z-index: 0;
-            pointer-events: none;
-            /* HAPUS baris background-image: url(''); agar tidak ada layer gelap */
-        }
         .content-zindex {
             position: relative;
             z-index: 1;
+            width: 100%;
         }
 
         /* === 1. HALAMAN COVER === */
@@ -170,6 +151,7 @@
             width: 100%;
             max-width: 480px;
             height: 100vh;
+            height: 100dvh;
             z-index: 40;
             display: flex;
             flex-direction: column;
@@ -179,7 +161,6 @@
             transition: transform 1s ease-in-out, opacity 0.8s ease-in-out;
             overflow: hidden;
             
-            /* GANTI URL DI BAWAH DENGAN URL FOTO PREWEDDING ANDA */
             background-image: url('adit&sekar.png'); 
             background-size: cover;
             background-position: center;
@@ -190,7 +171,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(30, 61, 47, 0.7); /* Overlay hijau gelap */
+            background-color: rgba(30, 61, 47, 0.7);
         }
 
         .cover-content {
@@ -199,15 +180,18 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 20px;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
         }
 
         .cover-content h1 {
             font-family: var(--font-judul);
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             margin: 10px 0;
             font-weight: 700;
             color: var(--warna-dasar);
+            line-height: 1.2;
         }
 
         .cover-content .ampersand {
@@ -222,7 +206,7 @@
         
         .cover-content .intro-text {
             font-family: var(--font-judul);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-style: italic;
             color: var(--warna-aksen);
             margin-bottom: 10px;
@@ -230,7 +214,7 @@
 
         /* === 3. PROFIL PENGANTIN === */
         #couple {
-            background-color: #F5F0E1; /* UBAH KODE WARNA INI SESUAI KEINGINAN */
+            background-color: #F5F0E1;
             position: relative;
         }
 
@@ -282,31 +266,32 @@
             max-width: 500px;
             width: 100%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            position: relative; /* Agar corner ornamen bisa menempel di pojok */
+            position: relative;
             z-index: 2;
         }
 
         /* CSS untuk Ornamen Pojok (Corner) */
         .card-corner {
             position: absolute;
-            width: 100px; /* Ukuran ideal corner */
+            width: 100px;
             height: 100px;
             object-fit: contain;
             z-index: 2;
             pointer-events: none;
         }
         .corner-tl { top: 0px; left: 0px; }
-        .corner-tr { top: 0px; right: 0px; transform: scaleX(-1); } /* Flipped horizontal */
-        .corner-bl { bottom: 0px; left: 0px; transform: scaleY(-1); } /* Flipped vertical */
-        .corner-br { bottom: 0px; right: 0px; transform: scale(-1, -1); } /* Flipped both */
+        .corner-tr { top: 0px; right: 0px; transform: scaleX(-1); }
+        .corner-bl { bottom: 0px; left: 0px; transform: scaleY(-1); }
+        .corner-br { bottom: 0px; right: 0px; transform: scale(-1, -1); }
 
         .countdown-timer {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin: 30px 0;
             position: relative;
             z-index: 2;
+            flex-wrap: wrap;
         }
 
         .countdown-item {
@@ -438,7 +423,7 @@
             .section-title { font-size: 2rem; }
             .countdown-timer { gap: 10px; }
             .countdown-item { min-width: 60px; padding: 10px; }
-            .card-corner { width: 100px; height: 100px; } /* Pojok mengecil di HP */
+            .card-corner { width: 100px; height: 100px; }
         }
     </style>
 </head>
@@ -463,27 +448,27 @@
         <!-- ====================================== -->
         <section id="cover">
             <div class="cover-content">
-                <img src="dove.png" alt="Ornamen Atas Cover" style="width: 130px; margin-bottom: 15px;">
+                <img src="dove.png" alt="Ornamen Atas Cover" style="width: 120px; margin-bottom: 15px;">
                 
-                <p class="intro-text" style="font-size: 1.4rem; margin-bottom: 10px;">The Wedding of</p>
+                <p class="intro-text">The Wedding of</p>
                 
-                <h1 style="font-family: var(--font-judul); font-size: 3.5rem; line-height: 1.1; margin: 5px 0; font-weight: 700; color: var(--warna-dasar);">Aditya <span class="ampersand" style="color: var(--warna-aksen); font-style: italic;">&</span> Sekar</h1>
+                <h1>Aditya <span class="ampersand">&</span> Sekar</h1>
                 
-                <p style="font-size: 1.1rem; margin-top: 15px; letter-spacing: 2px;">KAMIS, 1 APRIL 2027</p>
+                <p>KAMIS, 1 APRIL 2027</p>
                 
-                <img src="divider-cover.png" alt="Ornamen Divider" style="width: 90%; max-width: 320px; margin: 20px 0;">
+                <img src="divider-cover.png" alt="Ornamen Divider" style="width: 100%; max-width: 300px; margin: 20px 0;">
                 
-                <p style="font-size: 0.9rem; margin-bottom: 5px; letter-spacing: 1px;">Kepada Yth.</p>
+                <p style="font-size: 0.9rem; margin-bottom: 5px;">Kepada Yth.</p>
                 <p id="guestNameCover" style="font-family: var(--font-judul); font-size: 1.3rem; margin-bottom: 30px; font-weight: 600;">Bapak/Ibu/Saudara/i</p>
                 
-                <button class="btn" onclick="openInvitation()" style="font-size: 1rem; padding: 12px 35px;">Buka Undangan</button>
+                <button class="btn" onclick="openInvitation()">Buka Undangan</button>
             </div>
         </section>
 
         <!-- ====================================== -->
         <!-- 2. SECTION: KUTIPAN                     -->
         <!-- ====================================== -->
-                <section id="quote" class="fade-in" style="min-height: auto; padding: 80px 20px;">
+        <section id="quote" class="fade-in" style="min-height: auto; padding: 80px 20px;">
             <!-- ASET ACAK -->
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; right: -30px; width: 150px; transform: rotate(15deg); opacity: 0.2;">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 50px; left: -40px; width: 180px; transform: rotate(-20deg); opacity: 0.2;">
@@ -491,7 +476,7 @@
             <!-- ASET: Ornamen batik Sunda sebagai pembatas atas -->
             <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-bottom: 20px; opacity: 0.8; position: relative; z-index: 2;">
             
-            <div style="max-width: 600px;" class="content-zindex">
+            <div style="max-width: 600px; position: relative; z-index: 2;">
                 <p style="font-style: italic; font-size: 1.1rem;">"Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."</p>
                 <br>
                 <p style="font-weight: 600; color: var(--warna-aksen);">Q.S. Ar-Rum: 21</p>
@@ -509,9 +494,6 @@
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 10%; left: 5%; width: 120px; transform: rotate(45deg); opacity: 0.2;">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 15%; right: -20px; width: 140px; transform: rotate(-30deg); opacity: 0.2;">
 
-            <!-- Watermark Ornamen Sunda di latar belakang -->
-            <div class="bg-ornament"></div>
-
             <div class="content-zindex">
                 <h2 class="section-title">Mempelai</h2>
                 <p class="section-subtitle">Pasangan Bahagia</p>
@@ -519,7 +501,6 @@
                 <div class="couple-container">
                     <!-- Profil Cowok -->
                     <div class="couple-profile">
-                        <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Aditya -->
                         <img src="adit.png" alt="Aditya" class="couple-img">
                         <h3>Aditya Permana, S.E.</h3>
                         <p>Putra dari Bapak [Nama Bapak Aditya]<br>& Ibu [Nama Ibu Aditya]</p>
@@ -527,7 +508,6 @@
                     
                     <!-- Profil Cewek -->
                     <div class="couple-profile">
-                        <!-- ASEET DIGITAL: Ganti src di bawah dengan foto Sekar -->
                         <img src="sekar.png" alt="Sekar" class="couple-img">
                         <h3>Sekar Asih, S.Ak.</h3>
                         <p>Putri dari Bapak [Nama Bapak Sekar]<br>& Ibu [Nama Ibu Sekar]</p>
@@ -547,7 +527,7 @@
             <h2 class="section-title" style="color: #ffffff;">Menuju Hari Bahagia</h2>
             <p class="section-subtitle" style="color: #ffffff; opacity: 0.9;">Hitung Mundur</p>
             
-            <!-- Countdown Timer Dipindah ke Sini -->
+            <!-- Countdown Timer -->
             <div class="countdown-timer" id="countdown" style="position: relative; z-index: 3;">
                 <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="days">00</span><label>Hari</label></div>
                 <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="hours">00</span><label>Jam</label></div>
@@ -564,20 +544,15 @@
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 5%; left: -20px; width: 110px; transform: rotate(-80deg); opacity: 0.15;">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 15%; right: -30px; width: 140px; transform: rotate(170deg); opacity: 0.15;">
 
-            <!-- ASET: Ornamen di atas judul card -->
             <img src="ornamen-atas-cover.png" alt="Ornamen Atas Judul" style="width: 200px; margin-bottom: 10px; position: relative; z-index: 2;">
             
             <h2 class="section-title">Save The Date</h2>
             <p class="section-subtitle">Rangkaian Acara</p>
             
             <div class="event-card">
-                <!-- ASET: 4 Ornamen untuk pojok card (Sisi kiri atas) -->
                 <img src="corner.png" alt="Corner" class="card-corner corner-tl">
-                <!-- Sisi kanan atas (otomatis dibalik oleh CSS) -->
                 <img src="corner.png" alt="Corner" class="card-corner corner-tr">
-                <!-- Sisi kiri bawah (otomatis dibalik oleh CSS) -->
                 <img src="corner.png" alt="Corner" class="card-corner corner-bl">
-                <!-- Sisi kanan bawah (otomatis dibalik oleh CSS) -->
                 <img src="corner.png" alt="Corner" class="card-corner corner-br">
 
                 <div class="event-detail" style="position: relative; z-index: 3;">
@@ -635,9 +610,8 @@
         <!-- ====================================== -->
         <footer class="fade-in" style="background-color: var(--warna-utama); color: var(--warna-dasar); min-height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 20px; text-align: center; position: relative; overflow: hidden;">            
             <!-- ASET ACAK (Filter putih agar terlihat di bg hijau) -->
-            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; right: 60%; transform: translateX(-50%) rotate(0deg); width: 100px; opacity: 0.15; filter: brightness(0) invert(1);">
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(0deg); width: 200px; opacity: 0.15; filter: brightness(0) invert(1);">
 
-            <!-- ASET: Ornamen di atas nama mempelai (bagian bawah undangan) -->
             <img src="ornamen-bawah.png" alt="Ornamen Penutup" style="width: 100px; margin-bottom: 20px; opacity: 0.9; position: relative; z-index: 2;">
 
             <h2 style="font-family: var(--font-judul); font-size: 1.8rem; color: var(--warna-dasar);">Aditya & Sekar</h2>
@@ -657,7 +631,6 @@
         }
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
-            // Reset cover ke posisi awal jika halaman di-refresh
             const cover = document.getElementById('cover');
             if (cover) {
                 cover.style.display = 'flex';
@@ -781,7 +754,7 @@
 
             const div = document.createElement('div');
             div.className = 'comment-item';
-            div.style.borderBottom = '1px solid rgba(30, 61, 47, 0.1)'; // Garis pemisah agar terlihat di bg krem
+            div.style.borderBottom = '1px solid rgba(30, 61, 47, 0.1)';
             div.innerHTML = `
                 <strong style="color: var(--warna-utama);">${data.nama}</strong> <span style="font-size:0.7rem; opacity:0.7; color: var(--warna-teks);">(${data.kehadiran})</span>
                 <p style="margin-top:5px; font-size:0.9rem; color: #2C2C2C;">${data.ucapan}</p>
@@ -789,7 +762,7 @@
             commentList.prepend(div);
         }
 
-        // Fungsi tarik data RSVP (GET) - Pintar membaca Object maupun Array
+        // Fungsi tarik data RSVP (GET)
         async function fetchComments() {
             const commentList = document.getElementById('comment-list');
             commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Memuat ucapan...</p>";
@@ -806,11 +779,10 @@
                 commentList.innerHTML = "";
                 
                 data.forEach(item => {
-                    // Mendeteksi format Object { nama: "...", ucapan: "..." }
                     const commentData = {
                         nama: item.nama,
                         kehadiran: item.kehadiran,
-                        ucapan: item.ucapan || item.pesan // Anticipation jika ada yang pakai 'pesan'
+                        ucapan: item.ucapan || item.pesan
                     };
                     addCommentToDOM(commentData);
                 });
