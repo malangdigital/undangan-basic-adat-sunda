@@ -275,8 +275,7 @@
                     </div>
                 </div>
 
-                <!-- BAWAH: Kepada Yth & Tombol -->
-                <div class="text-center space-y-4">
+                <div class="text-center space-y-4 mb-8">
                     <div>
                         <p class="font-sans text-white/55 text-[10px] sm:text-xs tracking-[2px] uppercase mb-0.5">Kepada Yth.</p>
                         <p class="font-sans text-white/55 text-[10px] sm:text-xs tracking-[2px] uppercase">Bapak/Ibu/Saudara/i</p>
@@ -694,7 +693,7 @@
             ucapanEmpty.classList.add('hidden');
             ucapanList.innerHTML = '';
 
-            fetch(GAS_URL)
+            fetch(GAS_URL, { redirect: 'follow', mode: 'cors' })
                 .then(function(response) {
                     if (!response.ok) throw new Error('Gagal memuat');
                     return response.json();
@@ -773,22 +772,23 @@
             btnKirim.disabled = true;
             btnKirim.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Mengirim...';
 
-            fetch(GAS_URL, {
-                method: 'POST',
-                body: JSON.stringify({ nama: nama, kehadiran: kehadiran, ucapan: ucapan })
-            })
-            .then(function(response) {
-                if (!response.ok) throw new Error('Gagal mengirim');
-                return response.json();
-            })
-            .then(function() {
-                rsvpForm.reset();
-                showToast('Terima kasih! Ucapan Anda berhasil dikirim.', 4000);
-                fetchUcapan();
-            })
-            .catch(function(err) {
-                console.error('Error:', err);
-                showToast('Gagal mengirim. Silakan coba lagi.');
+fetch(GAS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ nama: nama, kehadiran: kehadiran, ucapan: ucapan })
+})
+.then(function() {
+    // mode: 'no-cors' → response opaque, tidak bisa dibaca
+    // Anggap berhasil karena tidak ada error thrown
+    rsvpForm.reset();
+    showToast('Terima kasih! Ucapan Anda berhasil dikirim.', 4000);
+    fetchUcapan();
+})
+.catch(function(err) {
+    console.error('Error:', err);
+    showToast('Gagal mengirim. Silakan coba lagi.');
+})
             })
             .finally(function() {
                 btnKirim.disabled = false;
