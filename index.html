@@ -639,53 +639,42 @@
             }
         });
 
-        // PENTING: Ganti URL di bawah dengan Web App URL dari Google Apps Script Anda
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx77bMX9n4QnDTKq-5cs6GSvv6yYh84DE3qYsy2kPPxwAfMC9zX38_OrMP7k9_qBP7Y/exec";
 
-        // 1. Fungsi Buka Undangan & Play Music Otomatis
         const music = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
 
         function openInvitation() {
             const cover = document.getElementById('cover');
-            
-            // Animasi Cover ke atas & pudar
             cover.style.transform = "translateY(-100%)";
             cover.style.opacity = "0";
-            
-            // Tampilkan konten utama & mainkan musik
             setTimeout(() => {
                 cover.style.display = 'none';
                 musicBtn.style.display = "flex";
                 music.play();
-                musicBtn.innerHTML = "&#10074;&#10074;"; // Ganti simbol jadi Pause
+                musicBtn.innerHTML = "&#10074;&#10074;";
             }, 1000);
         }
 
-        // Fungsi Toggle (Matikan/Nyalakan Lagu)
         function toggleMusic() {
             if (music.paused) {
                 music.play();
-                musicBtn.innerHTML = "&#10074;&#10074;"; // Simbol Pause
+                musicBtn.innerHTML = "&#10074;&#10074;";
             } else {
                 music.pause();
-                musicBtn.innerHTML = "&#9835;"; // Simbol Nada (Play)
+                musicBtn.innerHTML = "&#9835;";
             }
         }
 
-        // 2. Countdown Timer Logika
         const targetDate = new Date("April 1, 2027 08:00:00+07:00").getTime();
-
         const countdownInterval = setInterval(() => {
             const now = new Date().getTime();
             const distance = targetDate - now;
-
             if (distance < 0) {
                 clearInterval(countdownInterval);
                 document.getElementById('countdown').innerHTML = "<p>Acara sedang berlangsung!</p>";
                 return;
             }
-
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -697,18 +686,17 @@
             document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
         }, 1000);
 
-        // 3. Animasi Fade In saat Scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
 
-        // 4. Logika Google Sheet (POST & GET)
+        // =====================================================
+        // PERBAIKAN TOTAL SISTEM RSVP (PASTI MUNCUL)
+        // =====================================================
+
         async function submitRSVP(e) {
             e.preventDefault();
             const btn = e.target.querySelector('button');
@@ -718,8 +706,7 @@
             const data = {
                 nama: document.getElementById('nama').value,
                 kehadiran: document.getElementById('kehadiran').value,
-                ucapan: document.getElementById('pesan').value,
-                pesan: document.getElementById('pesan').value // Kirim dua-duanya agar cocok dengan script apapun
+                ucapan: document.getElementById('pesan').value
             };
 
             try {
@@ -730,14 +717,12 @@
                     body: JSON.stringify(data)
                 });
                 
-                // Tampilkan langsung ke layar
+                // Langsung tampilkan ke layar
                 addCommentToDOM(data);
                 
                 document.querySelector('.rsvp-form').reset();
                 btn.innerText = "Kirim Ucapan";
                 btn.disabled = false;
-                
-                // HAPUS fetchComments() dari sini agar tidak menimpa pesan baru sebelum server selesai simpan
             } catch (error) {
                 console.error('Error:', error);
                 alert('Maaf, terjadi kesalahan. Coba lagi nanti.');
@@ -749,28 +734,33 @@
         function addCommentToDOM(data) {
             const commentList = document.getElementById('comment-list');
             const loadingText = commentList.querySelector('p');
-            if(loadingText) loadingText.remove();
+            if(loadingText && loadingText.textContent.includes('Memuat')) loadingText.remove();
 
             const div = document.createElement('div');
             div.className = 'comment-item';
             div.style.borderBottom = '1px solid rgba(30, 61, 47, 0.1)';
+            div.style.padding = '10px 0';
+            
+            // Ambil ucapan, kalau kosong tulis "Tidak ada pesan"
+            const pesanTampil = data.ucapan ? data.ucapan : "Tidak ada pesan";
+            
             div.innerHTML = `
                 <strong style="color: var(--warna-utama);">${data.nama}</strong> <span style="font-size:0.7rem; opacity:0.7; color: var(--warna-teks);">(${data.kehadiran})</span>
-                <p style="margin-top:5px; font-size:0.9rem; color: #2C2C2C;">${data.ucapan}</p>
+                <p style="margin-top:5px; font-size:0.9rem; color: #2C2C2C; margin-bottom: 0;">${pesanTampil}</p>
             `;
             commentList.prepend(div);
         }
 
-        // Fungsi tarik data RSVP (GET) - Super Pintar mendeteksi format Array maupun Object
         async function fetchComments() {
             const commentList = document.getElementById('comment-list');
             commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Memuat ucapan...</p>";
             
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
+                // Paksa minta data terbaru, abaikan cache browser
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?t=${Date.now()}`);
                 const data = await response.json();
                 
-                if (!Array.isArray(data) || data.length === 0) {
+                if (!data || data.length === 0) {
                     commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Jadilah yang pertama mengucapkan selamat!</p>";
                     return;
                 }
@@ -778,24 +768,11 @@
                 commentList.innerHTML = "";
                 
                 data.forEach(item => {
-                    let nama = "", kehadiran = "", ucapan = "";
-                    
-                    // Deteksi jika Script Anda mengirim Array (contoh: [0, 1, 2])
-                    if (Array.isArray(item)) {
-                        nama = item[1] || item[0] || "Tamu";
-                        kehadiran = item[2] || "";
-                        ucapan = item[4] || item[3] || item[2] || ""; // Cari ke mana kolom ucapan
-                    } else {
-                        // Deteksi jika Script Anda mengirim Object
-                        nama = item.nama || item.name || item.Nama || "Tamu";
-                        kehadiran = item.kehadiran || item.Kehadiran || item.status || "";
-                        ucapan = item.ucapan || item.pesan || item.Ucapan || item.Pesan || item.message || "";
-                    }
-
+                    // Karena di JSON sudah pasti berbentuk Object {nama, kehadiran, ucapan}
                     const commentData = {
-                        nama: nama,
-                        kehadiran: kehadiran,
-                        ucapan: ucapan
+                        nama: item.nama,
+                        kehadiran: item.kehadiran,
+                        ucapan: item.ucapan
                     };
                     addCommentToDOM(commentData);
                 });
@@ -805,9 +782,7 @@
             }
         }
 
-        // Panggil komentar saat halaman pertama kali dimuat
         window.onload = fetchComments;
-
     </script>
 </body>
 </html>
