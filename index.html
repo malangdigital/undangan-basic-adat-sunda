@@ -781,7 +781,42 @@
             .then(function() {
                 rsvpForm.reset();
                 showToast('Terima kasih! Ucapan Anda berhasil dikirim.', 4000);
-                setTimeout(fetchUcapan, 500);
+                
+                var card = document.createElement('div');
+                card.className = 'ucapan-card';
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(15px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                var badgeClass = 'bg-emerald-primary/10 text-emerald-primary';
+                var badgeIcon = 'fa-check-circle';
+                if (kehadiran === 'Tidak Hadir') {
+                    badgeClass = 'bg-red-50 text-red-600'; badgeIcon = 'fa-times-circle';
+                } else if (kehadiran === 'Masih Ragu') {
+                    badgeClass = 'bg-amber-50 text-amber-600'; badgeIcon = 'fa-question-circle';
+                }
+                
+                card.innerHTML =
+                    '<div class="flex items-start gap-3">' +
+                        '<div class="w-9 h-9 rounded-full bg-emerald-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">' +
+                            '<span class="font-serif text-emerald-primary font-bold text-sm">' + nama.charAt(0).toUpperCase() + '</span>' +
+                        '</div>' +
+                        '<div class="flex-1 min-w-0">' +
+                            '<div class="flex items-center gap-2 flex-wrap mb-1">' +
+                                '<span class="font-sans text-emerald-primary font-semibold text-sm">' + escapeHtml(nama) + '</span>' +
+                                '<span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ' + badgeClass + '">' +
+                                    '<i class="fas ' + badgeIcon + '" style="font-size:8px;"></i> ' + escapeHtml(kehadiran) +
+                                '</span>' +
+                            '</div>' +
+                            '<p class="font-sans text-emerald-primary/75 text-sm leading-relaxed break-words">' + escapeHtml(ucapan) + '</p>' +
+                        '</div>' +
+                    '</div>';
+                
+                ucapanList.insertBefore(card, ucapanList.firstChild);
+                requestAnimationFrame(function() {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                });
             })
             .catch(function(err) {
                 console.error('Error:', err);
