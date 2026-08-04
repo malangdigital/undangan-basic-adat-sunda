@@ -5,41 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Pernikahan Aditya & Sekar</title>
     
-    <!-- PENTING: Tempat memasukkan Font Google (Playfair Display & Montserrat) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* === PENGATURAN WARNA (PALET SUNDA ELEGAN) === */
-            --warna-utama: #1E3D2F; /* Hijau Zamrud Tua */
-            --warna-aksen: #C5A059; /* Emas / Gold */
-            --warna-dasar: #FDFBF7; /* Krem / Off-white */
-            --warna-teks: #2C2C2C;  /* Abu-abu gelap untuk teks */
-            
-            /* === PENGATURAN FONT === */
+            --warna-utama: #1E3D2F;
+            --warna-aksen: #C5A059;
+            --warna-dasar: #FDFBF7;
+            --warna-teks: #2C2C2C;
             --font-judul: 'Playfair Display', serif;
             --font-tubuh: 'Montserrat', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* FIX TOTAL: Body dan HTML dikunci, tidak akan ada scroll window */
         html, body {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; 
             font-family: var(--font-tubuh);
             background-color: #e2e8f0;
-            color: var(--warna-teks);
-            line-height: 1.6;
-            width: 100%;
-            overflow: hidden; /* KUNCI: Body tidak bisa discroll saat cover muncul */
-            -webkit-overflow-scrolling: touch;
         }
 
-        /* Kunci tampilan agar selalu mobile (Max Width 480px) */
+        /* HANYA Frame yang mengatur scroll */
         #mobileFrame {
             width: 100%;
             max-width: 480px;
@@ -47,468 +37,213 @@
             background-color: var(--warna-dasar);
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
             position: relative;
-            min-height: 100vh;
-            overflow: hidden; /* Memotong aset acak yang keluar batas frame */
+            height: 100vh;
+            height: 100dvh;
+            overflow-x: hidden;
+            overflow-y: hidden; /* Defaultnya terkunci */
+            -webkit-overflow-scrolling: touch;
+        }
+        /* Class untuk membuka scroll */
+        #mobileFrame.unlocked {
+            overflow-y: auto;
         }
 
-        /* === TOMBOL MUSIC MENGAMBANG === */
         .music-btn {
-            position: fixed;
-            top: 20px;
-            right: max(20px, calc(50% - 240px + 20px)); /* Kunci rapat di kanan frame 480px */
-            width: 45px;
-            height: 45px;
+            position: fixed; top: 20px;
+            right: max(20px, calc(50% - 240px + 20px));
+            width: 45px; height: 45px;
             background-color: var(--warna-utama);
             border: 1px solid var(--warna-aksen);
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 9999;
-            color: var(--warna-aksen);
-            font-size: 18px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 9999;
+            color: var(--warna-aksen); font-size: 18px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
-        }
-        .music-btn:hover {
-            transform: scale(1.1);
         }
 
-        /* Tombol Umum */
         .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: var(--warna-utama);
-            color: var(--warna-dasar);
-            text-decoration: none;
-            border-radius: 5px;
+            display: inline-block; padding: 12px 30px;
+            background-color: var(--warna-utama); color: var(--warna-dasar);
+            text-decoration: none; border-radius: 5px;
             border: 1px solid var(--warna-aksen);
-            font-weight: 500;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            cursor: pointer;
+            font-weight: 500; letter-spacing: 1px; transition: 0.3s; cursor: pointer;
         }
 
-        .btn:hover {
-            background-color: transparent;
-            color: var(--warna-utama);
-        }
-
-        /* === STRUKTUR HALAMAN === */
         section {
-            min-height: 100vh;
-            min-height: 100dvh; /* Fix bug address bar HP */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden; /* Memotong aset acak secara lokal */
+            min-height: 100vh; min-height: 100dvh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 60px 20px; text-align: center;
+            position: relative; overflow: hidden;
         }
 
         .section-title {
-            font-family: var(--font-judul);
-            color: var(--warna-utama);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 2;
+            font-family: var(--font-judul); color: var(--warna-utama);
+            font-size: 2.5rem; margin-bottom: 10px; position: relative; z-index: 2;
         }
 
         .section-subtitle {
-            font-size: 0.9rem;
-            color: var(--warna-aksen);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 2;
+            font-size: 0.9rem; color: var(--warna-aksen);
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 40px; position: relative; z-index: 2;
         }
 
-        /* === ASET ACAK YANG BERSERAKAN === */
-        .scattered-asset {
-            position: absolute;
-            z-index: 0;
-            pointer-events: none;
-        }
+        .scattered-asset { position: absolute; z-index: 0; pointer-events: none; }
+        .content-zindex { position: relative; z-index: 1; width: 100%; }
 
-        .content-zindex {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-        }
-
-        /* === 1. HALAMAN COVER === */
+        /* Cover diposisikan fixed agar menutupi frame */
         #cover {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 480px;
-            height: 100vh;
-            height: 100dvh;
-            z-index: 40;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            position: fixed; top: 0; left: 0; right: 0; margin: 0 auto;
+            width: 100%; max-width: 480px;
+            height: 100vh; height: 100dvh; z-index: 40;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center;
             transition: transform 1s ease-in-out, opacity 0.8s ease-in-out;
             overflow: hidden;
-            
             background-image: url('adit&sekar.png'); 
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
             color: var(--warna-dasar);
         }
-
         #cover::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background-color: rgba(30, 61, 47, 0.7);
         }
-
         .cover-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
+            position: relative; z-index: 2; display: flex; flex-direction: column;
+            align-items: center; width: 100%; max-width: 400px; padding: 20px;
         }
-
         .cover-content h1 {
-            font-family: var(--font-judul);
-            font-size: 3.2rem;
-            margin: 10px 0;
-            font-weight: 700;
-            color: var(--warna-dasar);
-            line-height: 1.2;
+            font-family: var(--font-judul); font-size: 3.5rem; margin: 0;
+            font-weight: 700; color: var(--warna-dasar); line-height: 1;
         }
-
         .cover-content .ampersand {
-            color: var(--warna-aksen);
-            font-style: italic;
+            color: var(--warna-aksen); font-style: italic; font-size: 3rem; margin: 5px 0;
         }
-
-        .cover-content p {
-            font-size: 1rem;
-            letter-spacing: 2px;
-        }
-        
+        .cover-content p { font-size: 1rem; letter-spacing: 2px; }
         .cover-content .intro-text {
-            font-family: var(--font-judul);
-            font-size: 1.4rem;
-            font-style: italic;
-            color: var(--warna-aksen);
-            margin-bottom: 10px;
+            font-family: var(--font-judul); font-size: 1.4rem; font-style: italic;
+            color: var(--warna-aksen); margin-bottom: 10px;
         }
 
-        /* === 3. PROFIL PENGANTIN === */
-        #couple {
-            background-color: #F5F0E1;
-            position: relative;
-        }
-
+        #couple { background-color: #F5F0E1; position: relative; }
         .couple-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 50px;
-            margin-top: 20px;
-            position: relative;
-            z-index: 2;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 50px;
+            margin-top: 20px; position: relative; z-index: 2;
         }
-
-        .couple-profile {
-            width: 300px;
-        }
-
+        .couple-profile { width: 300px; }
         .couple-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 3px solid var(--warna-aksen);
+            width: 200px; height: 200px; border-radius: 50%;
+            object-fit: cover; margin-bottom: 20px; border: 3px solid var(--warna-aksen);
         }
-
         .couple-profile h3 {
-            font-family: var(--font-judul);
-            font-size: 1.8rem;
-            color: var(--warna-utama);
-            margin-bottom: 5px;
+            font-family: var(--font-judul); font-size: 1.8rem;
+            color: var(--warna-utama); margin-bottom: 5px;
         }
 
-        .couple-profile p {
-            font-size: 0.9rem;
-            color: var(--warna-teks);
-        }
-
-        /* === 4. DETAIL ACARA & COUNTDOWN === */
-        #event {
-            background-color: #fff;
-        }
-
+        #event { background-color: #fff; }
         .event-card {
-            background-color: var(--warna-dasar);
-            border: 1px solid var(--warna-aksen);
-            padding: 40px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            position: relative;
-            z-index: 2;
+            background-color: var(--warna-dasar); border: 1px solid var(--warna-aksen);
+            padding: 40px; border-radius: 10px; max-width: 500px; width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; z-index: 2;
         }
-
-        /* CSS untuk Ornamen Pojok (Corner) */
         .card-corner {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            z-index: 2;
-            pointer-events: none;
+            position: absolute; width: 100px; height: 100px;
+            object-fit: contain; z-index: 2; pointer-events: none;
         }
-        .corner-tl { top: 0px; left: 0px; }
-        .corner-tr { top: 0px; right: 0px; transform: scaleX(-1); }
-        .corner-bl { bottom: 0px; left: 0px; transform: scaleY(-1); }
-        .corner-br { bottom: 0px; right: 0px; transform: scale(-1, -1); }
+        .corner-tl { top: 0; left: 0; }
+        .corner-tr { top: 0; right: 0; transform: scaleX(-1); }
+        .corner-bl { bottom: 0; left: 0; transform: scaleY(-1); }
+        .corner-br { bottom: 0; right: 0; transform: scale(-1, -1); }
 
         .countdown-timer {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-            position: relative;
-            z-index: 2;
-            flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 15px; margin: 30px 0;
+            position: relative; z-index: 2; flex-wrap: wrap;
         }
-
         .countdown-item {
-            background-color: var(--warna-utama);
-            color: var(--warna-dasar);
-            padding: 15px;
-            border-radius: 8px;
-            min-width: 70px;
+            background-color: var(--warna-utama); color: var(--warna-dasar);
+            padding: 15px; border-radius: 8px; min-width: 70px;
         }
-
         .countdown-item span {
-            display: block;
-            font-family: var(--font-judul);
-            font-size: 1.8rem;
-            font-weight: 700;
+            display: block; font-family: var(--font-judul); font-size: 1.8rem; font-weight: 700;
         }
-
-        .countdown-item label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
         .event-detail h4 {
-            font-family: var(--font-judul);
-            color: var(--warna-utama);
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            font-family: var(--font-judul); color: var(--warna-utama);
+            font-size: 1.5rem; margin-bottom: 5px;
         }
 
-        .event-detail p {
-            margin-bottom: 20px;
-        }
-
-        /* === 6. RSVP & FOOTER === */
-        #rsvp {
-            background-color: #F5F0E1;
-            color: var(--warna-teks);
-        }
-
-        #rsvp .section-title, #rsvp .section-subtitle {
-            color: var(--warna-utama);
-        }
-
+        #rsvp { background-color: #F5F0E1; color: var(--warna-teks); }
+        #rsvp .section-title, #rsvp .section-subtitle { color: var(--warna-utama); }
         .rsvp-form {
-            max-width: 500px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            z-index: 2;
+            max-width: 500px; width: 100%; display: flex; flex-direction: column;
+            gap: 15px; position: relative; z-index: 2;
         }
-
         .rsvp-form input, .rsvp-form select, .rsvp-form textarea {
-            padding: 12px;
-            border-radius: 5px;
-            border: 1px solid var(--warna-aksen);
-            background-color: var(--warna-dasar);
-            color: var(--warna-teks);
-            font-family: var(--font-tubuh);
+            padding: 12px; border-radius: 5px; border: 1px solid var(--warna-aksen);
+            background-color: var(--warna-dasar); color: var(--warna-teks); font-family: var(--font-tubuh);
         }
-
-        .rsvp-form textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
         #comment-list {
-            margin-top: 30px;
-            width: 100%;
-            max-width: 500px;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 10px;
-            background: rgba(30, 61, 47, 0.05);
-            border: 1px solid rgba(197, 160, 89, 0.3);
-            color: #2C2C2C;
-            position: relative;
-            z-index: 2;
+            margin-top: 30px; width: 100%; max-width: 500px; text-align: left;
+            max-height: 200px; overflow-y: auto; padding: 10px;
+            background: rgba(30, 61, 47, 0.05); border: 1px solid rgba(197, 160, 89, 0.3);
+            color: #2C2C2C; position: relative; z-index: 2;
         }
-
-        .comment-item {
-            border-bottom: 1px solid rgba(30, 61, 47, 0.1);
-            padding: 10px 0;
-        }
-
-        .comment-item strong {
-            color: var(--warna-utama);
-        }
+        .comment-item { border-bottom: 1px solid rgba(30, 61, 47, 0.1); padding: 10px 0; }
+        .comment-item strong { color: var(--warna-utama); }
 
         footer {
-            margin-top: 60px;
-            text-align: center;
-            opacity: 0.8;
-            position: relative;
-            z-index: 2;
+            margin-top: 60px; text-align: center; opacity: 0.8; position: relative; z-index: 2;
         }
 
-        footer h2 {
-            font-family: var(--font-judul);
-            font-size: 1.8rem;
-            color: var(--warna-dasar);
-        }
-
-        footer p {
-            font-family: var(--font-tubuh);
-            font-size: 0.8rem;
-            margin-top: 10px;
-            letter-spacing: 1px;
-            color: var(--warna-dasar);
-        }
-
-        /* Animasi Fade In saat Scroll */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s ease, transform 1s ease;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            .cover-content h1 { font-size: 2.5rem; }
-            .section-title { font-size: 2rem; }
-            .countdown-timer { gap: 10px; }
-            .countdown-item { min-width: 60px; padding: 10px; }
-            .card-corner { width: 100px; height: 100px; }
-        }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 1s ease, transform 1s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <!-- FRAME MOBILE VIEW -->
     <div id="mobileFrame">
 
-        <!-- TOMBOL MUSIC MENGAMBANG (POJOK KANAN ATAS) -->
-        <div class="music-btn" id="musicBtn" onclick="toggleMusic()" style="display: none;">
-            &#9835; <!-- Simbol Nada -->
-        </div>
+        <div class="music-btn" id="musicBtn" onclick="toggleMusic()" style="display: none;">&#9835;</div>
+        <audio id="bgMusic" loop><source src="Jangan Berhenti Mencintaiku.mp3" type="audio/mpeg"></audio>
 
-        <!-- ASET AUDIO: Ganti src dengan file lagu Anda di folder assets -->
-        <audio id="bgMusic" loop>
-            <source src="Jangan Berhenti Mencintaiku.mp3" type="audio/mpeg">
-            Browser Anda tidak mendukung audio.
-        </audio>
-
-        <!-- ====================================== -->
-        <!-- 1. SECTION: HALAMAN COVER / PEMBUKA     -->
-        <!-- ====================================== -->
         <section id="cover">
             <div class="cover-content">
                 <img src="dove.png" alt="Ornamen Atas Cover" style="width: 120px; margin-bottom: 15px;">
-                
                 <p class="intro-text">The Wedding of</p>
-                
-                <h1 style="font-size: 3.5rem; line-height: 1;">Aditya</h1>
-                <div class="ampersand" style="font-size: 3rem; margin: 5px 0;">&</div>
-                <h1 style="font-size: 3.5rem; line-height: 1;">Sekar</h1>
-                
-                <p>KAMIS, 1 APRIL 2027</p>
-                
+                <h1>Aditya</h1>
+                <div class="ampersand">&</div>
+                <h1>Sekar</h1>
+                <p style="margin-top: 15px;">KAMIS, 1 APRIL 2027</p>
                 <img src="divider-cover.png" alt="Ornamen Divider" style="width: 100%; max-width: 300px; margin: 20px 0;">
-                
                 <p style="font-size: 0.9rem; margin-bottom: 5px;">Kepada Yth.</p>
                 <p id="guestNameCover" style="font-family: var(--font-judul); font-size: 1.3rem; margin-bottom: 30px; font-weight: 600;">Bapak/Ibu/Saudara/i</p>
-                
                 <button class="btn" onclick="openInvitation()">Buka Undangan</button>
             </div>
         </section>
 
-        <!-- ====================================== -->
-        <!-- 2. SECTION: KUTIPAN                     -->
-        <!-- ====================================== -->
         <section id="quote" class="fade-in" style="min-height: auto; padding: 80px 20px;">
-            <!-- ASET ACAK -->
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; right: -30px; width: 150px; transform: rotate(15deg); opacity: 0.2;">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 50px; left: -40px; width: 180px; transform: rotate(-20deg); opacity: 0.2;">
-
-            <!-- ASET: Ornamen batik Sunda sebagai pembatas atas -->
             <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-bottom: 20px; opacity: 0.8; position: relative; z-index: 2;">
-            
             <div style="max-width: 600px; position: relative; z-index: 2;">
                 <p style="font-style: italic; font-size: 1.1rem;">"Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."</p>
                 <br>
                 <p style="font-weight: 600; color: var(--warna-aksen);">Q.S. Ar-Rum: 21</p>
             </div>
-
-            <!-- ASET: Ornamen batik Sunda sebagai pembatas bawah (diputar 180 derajat) -->
             <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-top: 20px; opacity: 0.8; transform: rotate(180deg); position: relative; z-index: 2;">
         </section>
 
-        <!-- ====================================== -->
-        <!-- 3. SECTION: PROFIL PENGANTIN            -->
-        <!-- ====================================== -->
         <section id="couple" class="fade-in">
-            <!-- ASET ACAK -->
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 10%; left: 5%; width: 120px; transform: rotate(45deg); opacity: 0.2;">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 15%; right: -20px; width: 140px; transform: rotate(-30deg); opacity: 0.2;">
-
             <div class="content-zindex">
                 <h2 class="section-title">Mempelai</h2>
                 <p class="section-subtitle">Pasangan Bahagia</p>
-                
                 <div class="couple-container">
-                    <!-- Profil Cowok -->
                     <div class="couple-profile">
                         <img src="adit.png" alt="Aditya" class="couple-img">
                         <h3>Aditya Permana, S.E.</h3>
                         <p>Putra dari Bapak [Nama Bapak Aditya]<br>& Ibu [Nama Ibu Aditya]</p>
                     </div>
-                    
-                    <!-- Profil Cewek -->
                     <div class="couple-profile">
                         <img src="sekar.png" alt="Sekar" class="couple-img">
                         <h3>Sekar Asih, S.Ak.</h3>
@@ -518,18 +253,11 @@
             </div>
         </section>
 
-        <!-- ====================================== -->
-        <!-- 4. SECTION: COUNTDOWN TIMER             -->
-        <!-- ====================================== -->
         <section id="countdown-section" class="fade-in" style="background-color: var(--warna-utama); min-height: auto; padding: 80px 20px;">
-            <!-- ASET ACAK (Filter putih agar terlihat di bg hijau) -->
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 5%; right: -50px; width: 200px; transform: rotate(10deg); opacity: 0.1; filter: brightness(0) invert(1);">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 10%; left: -40px; width: 150px; transform: rotate(-110deg); opacity: 0.1; filter: brightness(0) invert(1);">
-
             <h2 class="section-title" style="color: #ffffff;">Menuju Hari Bahagia</h2>
             <p class="section-subtitle" style="color: #ffffff; opacity: 0.9;">Hitung Mundur</p>
-            
-            <!-- Countdown Timer -->
             <div class="countdown-timer" id="countdown" style="position: relative; z-index: 3;">
                 <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="days">00</span><label>Hari</label></div>
                 <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="hours">00</span><label>Jam</label></div>
@@ -538,58 +266,38 @@
             </div>
         </section>
 
-        <!-- ====================================== -->
-        <!-- 5. SECTION: DETAIL ACARA & LOKASI       -->
-        <!-- ====================================== -->
         <section id="event" class="fade-in">
-            <!-- ASET ACAK -->
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 5%; left: -20px; width: 110px; transform: rotate(-80deg); opacity: 0.15;">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 15%; right: -30px; width: 140px; transform: rotate(170deg); opacity: 0.15;">
-
             <img src="ornamen-atas-cover.png" alt="Ornamen Atas Judul" style="width: 200px; margin-bottom: 10px; position: relative; z-index: 2;">
-            
             <h2 class="section-title">Save The Date</h2>
             <p class="section-subtitle">Rangkaian Acara</p>
-            
             <div class="event-card">
                 <img src="corner.png" alt="Corner" class="card-corner corner-tl">
                 <img src="corner.png" alt="Corner" class="card-corner corner-tr">
                 <img src="corner.png" alt="Corner" class="card-corner corner-bl">
                 <img src="corner.png" alt="Corner" class="card-corner corner-br">
-
                 <div class="event-detail" style="position: relative; z-index: 3;">
                     <h4>Akad Nikah</h4>
                     <p>Kamis, 1 April 2027<br>08.00 - 10.00 WIB</p>
-                    
                     <div style="border-top: 1px dashed var(--warna-aksen); margin: 20px 0;"></div>
-                    
                     <h4>Resepsi</h4>
                     <p>Kamis, 1 April 2027<br>11.00 - 16.00 WIB</p>
-                    
                     <h4 style="margin-top: 20px;">Hotel Grand Mercure</h4>
                     <p>[Nama Ballroom/Ruang], [Kota]</p>
-                    
-                    <!-- Tambahan: Embed Google Maps -->
                     <div style="margin: 15px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--warna-aksen);">
                         <iframe src="https://www.google.com/maps?q=Hotel+Grand+Mercure&output=embed" width="100%" height="200" style="border:0; display: block;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
-
                     <a href="https://maps.google.com/?q=Hotel+Grand+Mercure" target="_blank" class="btn" style="padding: 8px 20px; font-size: 0.9rem;">Lihat Lokasi</a>
                 </div>
             </div>
         </section>
 
-        <!-- ====================================== -->
-        <!-- 6. SECTION: RSVP & BUKU TAMU            -->
-        <!-- ====================================== -->
         <section id="rsvp" class="fade-in" style="min-height: auto; padding: 80px 20px;">
-            <!-- ASET ACAK -->
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 10%; left: -30px; width: 150px; transform: rotate(80deg); opacity: 0.2;">
             <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 5%; right: -20px; width: 130px; transform: rotate(95deg); opacity: 0.2;">
-
             <h2 class="section-title">Ucapan & Doa</h2>
             <p class="section-subtitle">Wilujeng Sumping</p>
-            
             <form class="rsvp-form" onsubmit="submitRSVP(event)">
                 <input type="text" id="nama" placeholder="Nama Anda" required>
                 <select id="kehadiran" required>
@@ -600,41 +308,28 @@
                 <textarea id="pesan" placeholder="Tulis ucapan dan doa terbaik Anda..." required></textarea>
                 <button type="submit" class="btn" style="background-color: var(--warna-utama); border-color: var(--warna-aksen); color: var(--warna-dasar);">Kirim Ucapan</button>
             </form>
-
-            <!-- Tempat menampilkan data dari Google Sheets -->
             <div id="comment-list">
                 <p style="text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);">Memuat ucapan...</p>
             </div>
         </section>
 
-        <!-- ====================================== -->
-        <!-- 7. SECTION: FOOTER PENUTUP              -->
-        <!-- ====================================== -->
         <footer class="fade-in" style="background-color: var(--warna-utama); color: var(--warna-dasar); min-height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 20px; text-align: center; position: relative; overflow: hidden;">            
-            <!-- ASET ACAK (Filter putih agar terlihat di bg hijau) -->
-            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(0deg); width: 200px; opacity: 0.15; filter: brightness(0) invert(1);">
-
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; right: 60%; transform: translateX(-50%) rotate(0deg); width: 100px; opacity: 0.15; filter: brightness(0) invert(1);">
             <img src="ornamen-bawah.png" alt="Ornamen Penutup" style="width: 100px; margin-bottom: 20px; opacity: 0.9; position: relative; z-index: 2;">
-
             <h2 style="font-family: var(--font-judul); font-size: 1.8rem; color: var(--warna-dasar);">Aditya & Sekar</h2>
             <p style="font-family: var(--font-tubuh); font-size: 0.8rem; margin-top: 10px; letter-spacing: 1px; color: var(--warna-dasar);">Hatur nuhun pisan atas doa dan kehadirannya.</p>
             <p style="margin-top: 15px; opacity: 0.6; font-size: 0.7rem; color: var(--warna-dasar);">created with love by malangdigital.com</p>
         </footer>
 
-    </div> <!-- End Mobile Frame -->
+    </div>
 
-    <!-- ====================================== -->
-    <!-- JAVASCRIPT: LOGIKA UNDANGAN             -->
-    <!-- ====================================== -->
     <script>
-        // Fix agar refresh selalu mulai dari awal (Cover)
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
+        const frame = document.getElementById('mobileFrame');
+
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-            // Kunci scroll lagi saat halaman di-refresh
-            document.body.style.overflow = 'hidden';
+            frame.scrollTop = 0; // Reset scroll frame ke atas
+            frame.classList.remove('unlocked'); // Kunci scroll frame saat di cover
             const cover = document.getElementById('cover');
             if (cover) {
                 cover.style.display = 'flex';
@@ -651,32 +346,24 @@
         function openInvitation() {
             const cover = document.getElementById('cover');
             
-            // Buka kunci scroll body agar bisa scroll ke bawah
-            document.body.style.overflow = 'auto';
+            frame.classList.add('unlocked'); // Buka kunci scroll frame
+            frame.scrollTop = 0; // Paksa frame mulai dari atas (Section Ayat)
             
-            // Paksa halaman kembali ke paling atas (Section Ayat)
-            window.scrollTo(0, 0);
-            
-            // Animasi Cover ke atas & pudar
             cover.style.transform = "translateY(-100%)";
             cover.style.opacity = "0";
-            
-            // Tampilkan konten utama & mainkan musik
             setTimeout(() => {
                 cover.style.display = 'none';
                 musicBtn.style.display = "flex";
                 music.play();
-                musicBtn.innerHTML = "&#10074;&#10074;"; // Ganti simbol jadi Pause
+                musicBtn.innerHTML = "&#10074;&#10074;";
             }, 1000);
         }
 
         function toggleMusic() {
             if (music.paused) {
-                music.play();
-                musicBtn.innerHTML = "&#10074;&#10074;";
+                music.play(); musicBtn.innerHTML = "&#10074;&#10074;";
             } else {
-                music.pause();
-                musicBtn.innerHTML = "&#9835;";
+                music.pause(); musicBtn.innerHTML = "&#9835;";
             }
         }
 
@@ -701,47 +388,32 @@
         }, 1000);
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
+            entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
-
-        // =====================================================
-        // PERBAIKAN TOTAL SISTEM RSVP (PASTI MUNCUL)
-        // =====================================================
 
         async function submitRSVP(e) {
             e.preventDefault();
             const btn = e.target.querySelector('button');
-            btn.innerText = "Mengirim...";
-            btn.disabled = true;
-
+            btn.innerText = "Mengirim..."; btn.disabled = true;
             const data = {
                 nama: document.getElementById('nama').value,
                 kehadiran: document.getElementById('kehadiran').value,
                 ucapan: document.getElementById('pesan').value
             };
-
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
+                    method: 'POST', mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
-                
-                // Langsung tampilkan ke layar
                 addCommentToDOM(data);
-                
                 document.querySelector('.rsvp-form').reset();
-                btn.innerText = "Kirim Ucapan";
-                btn.disabled = false;
+                btn.innerText = "Kirim Ucapan"; btn.disabled = false;
             } catch (error) {
                 console.error('Error:', error);
-                alert('Maaf, terjadi kesalahan. Coba lagi nanti.');
-                btn.innerText = "Kirim Ucapan";
-                btn.disabled = false;
+                alert('Maaf, terjadi kesalahan.');
+                btn.innerText = "Kirim Ucapan"; btn.disabled = false;
             }
         }
 
@@ -749,15 +421,11 @@
             const commentList = document.getElementById('comment-list');
             const loadingText = commentList.querySelector('p');
             if(loadingText && loadingText.textContent.includes('Memuat')) loadingText.remove();
-
             const div = document.createElement('div');
             div.className = 'comment-item';
             div.style.borderBottom = '1px solid rgba(30, 61, 47, 0.1)';
             div.style.padding = '10px 0';
-            
-            // Ambil ucapan, kalau kosong tulis "Tidak ada pesan"
             const pesanTampil = data.ucapan ? data.ucapan : "Tidak ada pesan";
-            
             div.innerHTML = `
                 <strong style="color: var(--warna-utama);">${data.nama}</strong> <span style="font-size:0.7rem; opacity:0.7; color: var(--warna-teks);">(${data.kehadiran})</span>
                 <p style="margin-top:5px; font-size:0.9rem; color: #2C2C2C; margin-bottom: 0;">${pesanTampil}</p>
@@ -768,26 +436,16 @@
         async function fetchComments() {
             const commentList = document.getElementById('comment-list');
             commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Memuat ucapan...</p>";
-            
             try {
-                // Paksa minta data terbaru, abaikan cache browser
                 const response = await fetch(`${GOOGLE_SCRIPT_URL}?t=${Date.now()}`);
                 const data = await response.json();
-                
                 if (!data || data.length === 0) {
                     commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Jadilah yang pertama mengucapkan selamat!</p>";
                     return;
                 }
-                
                 commentList.innerHTML = "";
-                
                 data.forEach(item => {
-                    // Karena di JSON sudah pasti berbentuk Object {nama, kehadiran, ucapan}
-                    const commentData = {
-                        nama: item.nama,
-                        kehadiran: item.kehadiran,
-                        ucapan: item.ucapan
-                    };
+                    const commentData = { nama: item.nama, kehadiran: item.kehadiran, ucapan: item.ucapan };
                     addCommentToDOM(commentData);
                 });
             } catch (error) {
