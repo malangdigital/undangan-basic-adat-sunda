@@ -489,9 +489,11 @@
                             </button>
                         </form>
                     </div>
-                    <div class="reveal reveal-delay-2">
-                        <div id="ucapanList" class="space-y-4"></div>
-                        <div id="ucapanLoading" class="text-center py-8">
+                        <div class="reveal reveal-delay-2">
+                            <!-- Tambahkan max-h-[340px], overflow-y-auto, dan pr-2 -->
+                            <div id="ucapanList" class="space-y-4 max-h-[340px] overflow-y-auto pr-2 pb-1"></div>
+    
+                            <div id="ucapanLoading" class="text-center py-8">
                             <i class="fas fa-spinner fa-spin text-gold-accent text-xl"></i>
                             <p class="font-sans text-emerald-primary/50 text-xs mt-2 tracking-[2px] uppercase">Memuat ucapan</p>
                         </div>
