@@ -31,26 +31,25 @@
 
         body {
             font-family: var(--font-tubuh);
-            background-color: #e2e8f0; /* Warna abu-abu di luar frame mobile */
+            background-color: #e2e8f0;
             color: var(--warna-teks);
             line-height: 1.6;
-            overflow-x: hidden;
-            display: flex;
-            justify-content: center;
-            -webkit-overflow-scrolling: touch; /* Tambahan agar scroll di HP mulus */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Pindah ke sini agar tidak bikin nested scroll */
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Kunci tampilan agar selalu mobile (Max Width 480px) */
         #mobileFrame {
             width: 100%;
             max-width: 480px;
+            margin: 0 auto;
             background-color: var(--warna-dasar);
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
             position: relative;
             min-height: 100vh;
-            overflow-x: hidden; /* Ini yang akan memotong aset acak agar tidak bikin scroll horizontal */
-            overflow-y: auto;   /* Pastikan scroll vertikal mulus */
-            -webkit-overflow-scrolling: touch;
+            /* HAPUS overflow & display flex dari sini agar tidak ada 2 scrollbar */
         }
 
         /* === TOMBOL MUSIC MENGAMBANG === */
@@ -107,7 +106,8 @@
 
         /* === STRUKTUR HALAMAN === */
         section {
-            min-height: 100vh;
+            min-height: 100vh; /* Fallback untuk browser lama */
+            min-height: 100dvh; /* FIX BUG HP: Mencegah layar loncat saat address bar muncul/hilang */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -115,8 +115,6 @@
             padding: 60px 20px;
             text-align: center;
             position: relative;
-            overflow: visible; /* Ubah dari hidden ke visible agar scroll di HP tidak terkunci */
-            touch-action: pan-y; /* Memastikan jari bisa geser vertikal dengan mulus */
         }
 
         .section-title {
