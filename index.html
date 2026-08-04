@@ -768,34 +768,29 @@
             if (!kehadiran) { showToast('Silakan pilih konfirmasi kehadiran.'); return; }
             if (!ucapan) { showToast('Silakan tulis ucapan dan doa Anda.'); return; }
 
-            var btnKirim = document.getElementById('btnKirim');
-            btnKirim.disabled = true;
-            btnKirim.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Mengirim...';
-
+            var submitBtn = document.getElementById('btnKirim');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Mengirim...';
+            
             fetch(GAS_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ nama: nama, kehadiran: kehadiran, ucapan: ucapan })
-            })
-            .then(function(response) {
-                if (!response.ok) throw new Error('HTTP ' + response.status);
-                return response.text().then(function(text) {
-                    var result = JSON.parse(text);
-                    if (result.status !== 'success') throw new Error(result.message || 'Gagal menyimpan');
-                });
             })
             .then(function() {
                 rsvpForm.reset();
                 showToast('Terima kasih! Ucapan Anda berhasil dikirim.', 4000);
-                fetchUcapan();
+                setTimeout(fetchUcapan, 500);
             })
             .catch(function(err) {
                 console.error('Error:', err);
-                showToast('Gagal mengirim: ' + err.message);
+                showToast('Gagal mengirim. Silakan coba lagi.');
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane text-xs"></i> Kirim Ucapan';
             });
-
-            btnKirim.disabled = false;
-            btnKirim.innerHTML = '<i class="fas fa-paper-plane text-xs"></i> Kirim Ucapan';
         });
 
         /* ===========================
