@@ -568,21 +568,25 @@
         }
 
         /* ===========================
-           BUKA UNDANGAN (mengikuti mekanisme referensi)
-           1. Cover slide up via transform
-           2. Setelah 1 detik, cover display:none & mainContent tampil
-           3. Musik diputar, scroll ke atas
+           BUKA UNDANGAN (Diperbarui agar lebih smooth)
         =========================== */
         btnBuka.addEventListener('click', function() {
-            // Slide cover ke atas
+            // 1. Tampilkan main content SEKARANG JUGA (agar saat cover naik, section ayat langsung terlihat di bawahnya)
+            mainContent.classList.remove('hidden');
+            
+            // 2. Pastikan posisi scroll ada di paling atas
+            window.scrollTo(0, 0);
+
+            // 3. Mulai mainkan animasi teks fade-up bersamaan dengan naiknya cover
+            setTimeout(triggerReveals, 100);
+
+            // 4. Slide cover ke atas
             cover.style.transform = "translateY(-100%)";
 
+            // 5. Jalankan fitur lainnya setelah animasi cover selesai (1 detik)
             setTimeout(function() {
-                // Sembunyikan cover sepenuhnya
+                // Sembunyikan cover sepenuhnya dari DOM
                 cover.style.display = 'none';
-
-                // Tampilkan main content
-                mainContent.classList.remove('hidden');
 
                 // Aktifkan musik
                 audioToggle.classList.add('active');
@@ -597,12 +601,6 @@
 
                 // Buat kupu-kupu
                 createButterflies();
-
-                // Scroll ke atas
-                window.scrollTo(0, 0);
-
-                // Trigger scroll reveal
-                setTimeout(triggerReveals, 300);
             }, 1000);
         });
 
