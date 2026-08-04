@@ -48,7 +48,9 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
             position: relative;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Ini yang akan memotong aset acak agar tidak bikin scroll horizontal */
+            overflow-y: auto;   /* Pastikan scroll vertikal mulus */
+            -webkit-overflow-scrolling: touch;
         }
 
         /* === TOMBOL MUSIC MENGAMBANG === */
@@ -113,6 +115,8 @@
             padding: 60px 20px;
             text-align: center;
             position: relative;
+            overflow: visible; /* Ubah dari hidden ke visible agar scroll di HP tidak terkunci */
+            touch-action: pan-y; /* Memastikan jari bisa geser vertikal dengan mulus */
         }
 
         .section-title {
@@ -120,6 +124,8 @@
             color: var(--warna-utama);
             font-size: 2.5rem;
             margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
         }
 
         .section-subtitle {
@@ -128,6 +134,15 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* === ASET ACAK YANG BERSERAKAN === */
+        .scattered-asset {
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
         }
 
         /* === CARA MEMASANG ORNAMEN LATAR (WATERMARK) === */
@@ -227,6 +242,8 @@
             justify-content: center;
             gap: 50px;
             margin-top: 20px;
+            position: relative;
+            z-index: 2;
         }
 
         .couple-profile {
@@ -268,6 +285,7 @@
             width: 100%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             position: relative; /* Agar corner ornamen bisa menempel di pojok */
+            z-index: 2;
         }
 
         /* CSS untuk Ornamen Pojok (Corner) */
@@ -289,6 +307,8 @@
             justify-content: center;
             gap: 20px;
             margin: 30px 0;
+            position: relative;
+            z-index: 2;
         }
 
         .countdown-item {
@@ -325,12 +345,12 @@
 
         /* === 6. RSVP & FOOTER === */
         #rsvp {
-            background-color: var(--warna-utama);
-            color: var(--warna-dasar);
+            background-color: #F5F0E1;
+            color: var(--warna-teks);
         }
 
         #rsvp .section-title, #rsvp .section-subtitle {
-            color: var(--warna-dasar);
+            color: var(--warna-utama);
         }
 
         .rsvp-form {
@@ -339,6 +359,8 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            position: relative;
+            z-index: 2;
         }
 
         .rsvp-form input, .rsvp-form select, .rsvp-form textarea {
@@ -363,28 +385,34 @@
             max-height: 200px;
             overflow-y: auto;
             padding: 10px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 5px;
+            background: rgba(30, 61, 47, 0.05);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            color: #2C2C2C;
+            position: relative;
+            z-index: 2;
         }
 
         .comment-item {
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(30, 61, 47, 0.1);
             padding: 10px 0;
         }
 
         .comment-item strong {
-            color: var(--warna-aksen);
+            color: var(--warna-utama);
         }
 
         footer {
             margin-top: 60px;
             text-align: center;
             opacity: 0.8;
+            position: relative;
+            z-index: 2;
         }
 
         footer h2 {
             font-family: var(--font-judul);
             font-size: 1.8rem;
+            color: var(--warna-dasar);
         }
 
         footer p {
@@ -392,6 +420,7 @@
             font-size: 0.8rem;
             margin-top: 10px;
             letter-spacing: 1px;
+            color: var(--warna-dasar);
         }
 
         /* Animasi Fade In saat Scroll */
@@ -435,32 +464,36 @@
         <!-- 1. SECTION: HALAMAN COVER / PEMBUKA     -->
         <!-- ====================================== -->
         <section id="cover">
-            <div class="cover-content">
+            <div class="cover-content" style="width: 100%; padding: 40px 20px;">
                 <!-- ASET: Ornamen di atas halaman cover -->
-                <img src="dove.png" alt="Ornamen Atas Cover" style="width: 120px; margin-bottom: 10px;">
+                <img src="dove.png" alt="Ornamen Atas Cover" style="width: 140px; margin-bottom: 20px;">
                 
-                <p class="intro-text">The Wedding of</p>
+                <p class="intro-text" style="font-size: 1.6rem; margin-bottom: 10px;">The Wedding of</p>
                 
-                <h1>Aditya <span class="ampersand">&</span> Sekar</h1>
+                <h1 style="font-size: 4rem; line-height: 1.1; margin: 5px 0;">Aditya <span class="ampersand">&</span> Sekar</h1>
                 
-                <p>KAMIS, 1 APRIL 2027</p>
+                <p style="font-size: 1.1rem; margin-top: 15px;">KAMIS, 1 APRIL 2027</p>
                 
                 <!-- ASET: Ornamen Divider antara tanggal dan Kepada Yth -->
-                <img src="divider-cover.png" alt="Ornamen Divider" style="width: 300px; margin: 10px 0;">
+                <img src="divider-cover.png" alt="Ornamen Divider" style="width: 90%; max-width: 350px; margin: 20px 0;">
                 
-                <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                <p style="font-size: 0.9rem; margin-bottom: 5px;">Kepada Yth.</p>
+                <p style="font-family: var(--font-judul); font-size: 1.4rem; margin-bottom: 30px;">Bapak/Ibu/Saudara/i</p>
                 
-                <br>
-                <button class="btn" onclick="openInvitation()">Buka Undangan</button>
+                <button class="btn" onclick="openInvitation()" style="font-size: 1rem; padding: 14px 40px;">Buka Undangan</button>
             </div>
         </section>
 
         <!-- ====================================== -->
         <!-- 2. SECTION: KUTIPAN                     -->
         <!-- ====================================== -->
-        <section id="quote" class="fade-in">
+                <section id="quote" class="fade-in" style="min-height: auto; padding: 80px 20px;">
+            <!-- ASET ACAK -->
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; right: -30px; width: 150px; transform: rotate(15deg); opacity: 0.2;">
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 50px; left: -40px; width: 180px; transform: rotate(-20deg); opacity: 0.2;">
+
             <!-- ASET: Ornamen batik Sunda sebagai pembatas atas -->
-            <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-bottom: 20px; opacity: 0.8;">
+            <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-bottom: 20px; opacity: 0.8; position: relative; z-index: 2;">
             
             <div style="max-width: 600px;" class="content-zindex">
                 <p style="font-style: italic; font-size: 1.1rem;">"Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."</p>
@@ -469,13 +502,17 @@
             </div>
 
             <!-- ASET: Ornamen batik Sunda sebagai pembatas bawah (diputar 180 derajat) -->
-            <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-top: 20px; opacity: 0.8; transform: rotate(180deg);">
+            <img src="divider-ayat.png" alt="Ornamen Sunda" style="width: 100px; margin-top: 20px; opacity: 0.8; transform: rotate(180deg); position: relative; z-index: 2;">
         </section>
 
         <!-- ====================================== -->
         <!-- 3. SECTION: PROFIL PENGANTIN            -->
         <!-- ====================================== -->
         <section id="couple" class="fade-in">
+            <!-- ASET ACAK -->
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 10%; left: 5%; width: 120px; transform: rotate(45deg); opacity: 0.2;">
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 15%; right: -20px; width: 140px; transform: rotate(-30deg); opacity: 0.2;">
+
             <!-- Watermark Ornamen Sunda di latar belakang -->
             <div class="bg-ornament"></div>
 
@@ -504,11 +541,35 @@
         </section>
 
         <!-- ====================================== -->
-        <!-- 4. SECTION: DETAIL ACARA & COUNTDOWN    -->
+        <!-- 4. SECTION: COUNTDOWN TIMER             -->
+        <!-- ====================================== -->
+        <section id="countdown-section" class="fade-in" style="background-color: var(--warna-utama); min-height: auto; padding: 80px 20px;">
+            <!-- ASET ACAK (Filter putih agar terlihat di bg hijau) -->
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 5%; right: -50px; width: 200px; transform: rotate(10deg); opacity: 0.1; filter: brightness(0) invert(1);">
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 10%; left: -40px; width: 150px; transform: rotate(-110deg); opacity: 0.1; filter: brightness(0) invert(1);">
+
+            <h2 class="section-title" style="color: #ffffff;">Menuju Hari Bahagia</h2>
+            <p class="section-subtitle" style="color: #ffffff; opacity: 0.9;">Hitung Mundur</p>
+            
+            <!-- Countdown Timer Dipindah ke Sini -->
+            <div class="countdown-timer" id="countdown" style="position: relative; z-index: 3;">
+                <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="days">00</span><label>Hari</label></div>
+                <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="hours">00</span><label>Jam</label></div>
+                <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="minutes">00</span><label>Menit</label></div>
+                <div class="countdown-item" style="background-color: var(--warna-dasar); color: var(--warna-utama);"><span id="seconds">00</span><label>Detik</label></div>
+            </div>
+        </section>
+
+        <!-- ====================================== -->
+        <!-- 5. SECTION: DETAIL ACARA & LOKASI       -->
         <!-- ====================================== -->
         <section id="event" class="fade-in">
+            <!-- ASET ACAK -->
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 5%; left: -20px; width: 110px; transform: rotate(-80deg); opacity: 0.15;">
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 15%; right: -30px; width: 140px; transform: rotate(170deg); opacity: 0.15;">
+
             <!-- ASET: Ornamen di atas judul card -->
-            <img src="ornamen-atas-cover.png" alt="Ornamen Atas Judul" style="width: 200px; margin-bottom: 10px;">
+            <img src="ornamen-atas-cover.png" alt="Ornamen Atas Judul" style="width: 200px; margin-bottom: 10px; position: relative; z-index: 2;">
             
             <h2 class="section-title">Save The Date</h2>
             <p class="section-subtitle">Rangkaian Acara</p>
@@ -522,14 +583,6 @@
                 <img src="corner.png" alt="Corner" class="card-corner corner-bl">
                 <!-- Sisi kanan bawah (otomatis dibalik oleh CSS) -->
                 <img src="corner.png" alt="Corner" class="card-corner corner-br">
-
-                <!-- Countdown Timer -->
-                <div class="countdown-timer" id="countdown" style="position: relative; z-index: 3;">
-                    <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
-                    <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
-                    <div class="countdown-item"><span id="minutes">00</span><label>Menit</label></div>
-                    <div class="countdown-item"><span id="seconds">00</span><label>Detik</label></div>
-                </div>
 
                 <div class="event-detail" style="position: relative; z-index: 3;">
                     <h4>Akad Nikah</h4>
@@ -554,9 +607,13 @@
         </section>
 
         <!-- ====================================== -->
-        <!-- 5. SECTION: RSVP & FOOTER (LANGSUNG PENUTUP) -->
+        <!-- 6. SECTION: RSVP & BUKU TAMU            -->
         <!-- ====================================== -->
-        <section id="rsvp" class="fade-in">
+        <section id="rsvp" class="fade-in" style="min-height: auto; padding: 80px 20px;">
+            <!-- ASET ACAK -->
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 10%; left: -30px; width: 150px; transform: rotate(80deg); opacity: 0.2;">
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="bottom: 5%; right: -20px; width: 130px; transform: rotate(95deg); opacity: 0.2;">
+
             <h2 class="section-title">Ucapan & Doa</h2>
             <p class="section-subtitle">Wilujeng Sumping</p>
             
@@ -568,24 +625,29 @@
                     <option value="Tidak Hadir">Mohon maaf belum bisa hadir</option>
                 </select>
                 <textarea id="pesan" placeholder="Tulis ucapan dan doa terbaik Anda..." required></textarea>
-                <button type="submit" class="btn" style="background-color: var(--warna-aksen); border-color: var(--warna-dasar);">Kirim Ucapan</button>
+                <button type="submit" class="btn" style="background-color: var(--warna-utama); border-color: var(--warna-aksen); color: var(--warna-dasar);">Kirim Ucapan</button>
             </form>
 
             <!-- Tempat menampilkan data dari Google Sheets -->
             <div id="comment-list">
-                <p style="text-align: center; font-size: 0.8rem; opacity: 0.7;">Memuat ucapan...</p>
+                <p style="text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);">Memuat ucapan...</p>
             </div>
+        </section>
+
+        <!-- ====================================== -->
+        <!-- 7. SECTION: FOOTER PENUTUP              -->
+        <!-- ====================================== -->
+        <footer class="fade-in" style="background-color: var(--warna-utama); color: var(--warna-dasar); min-height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 20px; text-align: center; position: relative; overflow: hidden;">            
+            <!-- ASET ACAK (Filter putih agar terlihat di bg hijau) -->
+            <img src="aset.png" alt="Hiasan" class="scattered-asset" style="top: 20px; right: 60%; transform: translateX(-50%) rotate(0deg); width: 100px; opacity: 0.15; filter: brightness(0) invert(1);">
 
             <!-- ASET: Ornamen di atas nama mempelai (bagian bawah undangan) -->
-            <img src="ornamen-bawah.png" alt="Ornamen Penutup" style="width: 100px; margin-top: 50px; margin-bottom: 0px; opacity: 0.9;">
+            <img src="ornamen-bawah.png" alt="Ornamen Penutup" style="width: 100px; margin-bottom: 20px; opacity: 0.9; position: relative; z-index: 2;">
 
-            <!-- FOOTER PENUTUP -->
-            <footer>
-                <h2>Aditya & Sekar</h2>
-                <p>Hatur nuhun pisan atas doa dan kehadirannya.</p>
-                <p style="margin-top: 15px; opacity: 0.6; font-size: 0.7rem;">created with love by malangdigital.com</p>
-            </footer>
-        </section>
+            <h2 style="font-family: var(--font-judul); font-size: 1.8rem; color: var(--warna-dasar);">Aditya & Sekar</h2>
+            <p style="font-family: var(--font-tubuh); font-size: 0.8rem; margin-top: 10px; letter-spacing: 1px; color: var(--warna-dasar);">Hatur nuhun pisan atas doa dan kehadirannya.</p>
+            <p style="margin-top: 15px; opacity: 0.6; font-size: 0.7rem; color: var(--warna-dasar);">created with love by malangdigital.com</p>
+        </footer>
 
     </div> <!-- End Mobile Frame -->
 
@@ -715,9 +777,10 @@
 
             const div = document.createElement('div');
             div.className = 'comment-item';
+            div.style.borderBottom = '1px solid rgba(30, 61, 47, 0.1)'; // Garis pemisah agar terlihat di bg krem
             div.innerHTML = `
-                <strong>${data.nama}</strong> <span style="font-size:0.7rem; opacity:0.7;">(${data.kehadiran})</span>
-                <p style="margin-top:5px; font-size:0.9rem;">${data.ucapan}</p>
+                <strong style="color: var(--warna-utama);">${data.nama}</strong> <span style="font-size:0.7rem; opacity:0.7; color: var(--warna-teks);">(${data.kehadiran})</span>
+                <p style="margin-top:5px; font-size:0.9rem; color: #2C2C2C;">${data.ucapan}</p>
             `;
             commentList.prepend(div);
         }
@@ -725,14 +788,14 @@
         // Fungsi tarik data RSVP (GET) - Pintar membaca Object maupun Array
         async function fetchComments() {
             const commentList = document.getElementById('comment-list');
-            commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Memuat ucapan...</p>";
+            commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Memuat ucapan...</p>";
             
             try {
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const data = await response.json();
                 
                 if (!Array.isArray(data) || data.length === 0) {
-                    commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Jadilah yang pertama mengucapkan selamat!</p>";
+                    commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Jadilah yang pertama mengucapkan selamat!</p>";
                     return;
                 }
                 
@@ -749,7 +812,7 @@
                 });
             } catch (error) {
                 console.error('Error fetching comments:', error);
-                commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7;'>Gagal memuat ucapan.</p>";
+                commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Gagal memuat ucapan.</p>";
             }
         }
 
