@@ -521,7 +521,7 @@
         /* ===========================
            KONFIGURASI & VARIABEL
         =========================== */
-        var GAS_URL = "https://script.google.com/macros/s/AKfycbx77bMX9n4QnDTKq-5cs6GSvv6yYh84DE3qYsy2kPPxwAfMC9zX38_OrMP7k9_qBP7Y.exec";
+        var GAS_URL = "https://script.google.com/macros/s/AKfycbx_32ZhFQZdTHBzwKv6sQu_l9lAN_sjaFvTO3yhc8K3mje6fwuws62S3GYlWvz5ubE5/exec";
         var WEDDING_DATE = new Date('2027-04-01T08:00:00+07:00');
         var FRAME_MAX_W = 430;
         var isMusicPlaying = false;
@@ -717,7 +717,7 @@
                         var badgeIcon = 'fa-check-circle';
                         if (entry.kehadiran === 'Tidak Hadir') {
                             badgeClass = 'bg-red-50 text-red-600'; badgeIcon = 'fa-times-circle';
-                        } else if (entry.kehadiran === 'Mas?Ragu') {
+                        } else if (entry.kehadiran === 'Masih Ragu') {
                             badgeClass = 'bg-amber-50 text-amber-600'; badgeIcon = 'fa-question-circle';
                         }
 
@@ -774,9 +774,15 @@
 
             fetch(GAS_URL, {
                 method: 'POST',
-                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ nama: nama, kehadiran: kehadiran, ucapan: ucapan })
+            })
+            .then(function(response) {
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                return response.text().then(function(text) {
+                    var result = JSON.parse(text);
+                    if (result.status !== 'success') throw new Error(result.message || 'Gagal menyimpan');
+                });
             })
             .then(function() {
                 rsvpForm.reset();
@@ -785,7 +791,7 @@
             })
             .catch(function(err) {
                 console.error('Error:', err);
-                showToast('Gagal mengirim. Silakan coba lagi.');
+                showToast('Gagal mengirim: ' + err.message);
             });
 
             btnKirim.disabled = false;
