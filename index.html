@@ -715,11 +715,11 @@
             btn.innerText = "Mengirim...";
             btn.disabled = true;
 
-            // Mengirim variabel 'ucapan' agar cocok dengan Google Script Anda
             const data = {
                 nama: document.getElementById('nama').value,
                 kehadiran: document.getElementById('kehadiran').value,
-                ucapan: document.getElementById('pesan').value
+                ucapan: document.getElementById('pesan').value,
+                pesan: document.getElementById('pesan').value // Kirim dua-duanya agar cocok dengan script apapun
             };
 
             try {
@@ -730,15 +730,14 @@
                     body: JSON.stringify(data)
                 });
                 
-                // Tampilkan langsung ke layar (Local DOM)
+                // Tampilkan langsung ke layar
                 addCommentToDOM(data);
                 
                 document.querySelector('.rsvp-form').reset();
                 btn.innerText = "Kirim Ucapan";
                 btn.disabled = false;
                 
-                // Tarik ulang data dari Server untuk memastikan urutan tersimpan
-                fetchComments(); 
+                // HAPUS fetchComments() dari sini agar tidak menimpa pesan baru sebelum server selesai simpan
             } catch (error) {
                 console.error('Error:', error);
                 alert('Maaf, terjadi kesalahan. Coba lagi nanti.');
@@ -762,7 +761,7 @@
             commentList.prepend(div);
         }
 
-        // Fungsi tarik data RSVP (GET)
+        // Fungsi tarik data RSVP (GET) - Super Pintar mendeteksi format Array maupun Object
         async function fetchComments() {
             const commentList = document.getElementById('comment-list');
             commentList.innerHTML = "<p style='text-align: center; font-size: 0.8rem; opacity: 0.7; color: var(--warna-utama);'>Memuat ucapan...</p>";
@@ -779,10 +778,24 @@
                 commentList.innerHTML = "";
                 
                 data.forEach(item => {
+                    let nama = "", kehadiran = "", ucapan = "";
+                    
+                    // Deteksi jika Script Anda mengirim Array (contoh: [0, 1, 2])
+                    if (Array.isArray(item)) {
+                        nama = item[1] || item[0] || "Tamu";
+                        kehadiran = item[2] || "";
+                        ucapan = item[4] || item[3] || item[2] || ""; // Cari ke mana kolom ucapan
+                    } else {
+                        // Deteksi jika Script Anda mengirim Object
+                        nama = item.nama || item.name || item.Nama || "Tamu";
+                        kehadiran = item.kehadiran || item.Kehadiran || item.status || "";
+                        ucapan = item.ucapan || item.pesan || item.Ucapan || item.Pesan || item.message || "";
+                    }
+
                     const commentData = {
-                        nama: item.nama,
-                        kehadiran: item.kehadiran,
-                        ucapan: item.ucapan || item.pesan
+                        nama: nama,
+                        kehadiran: kehadiran,
+                        ucapan: ucapan
                     };
                     addCommentToDOM(commentData);
                 });
