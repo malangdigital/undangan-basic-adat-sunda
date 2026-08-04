@@ -37,6 +37,7 @@
             overflow-x: hidden;
             display: flex;
             justify-content: center;
+            -webkit-overflow-scrolling: touch; /* Tambahan agar scroll di HP mulus */
         }
 
         /* Kunci tampilan agar selalu mobile (Max Width 480px) */
@@ -540,9 +541,14 @@
                     <p>Kamis, 1 April 2027<br>11.00 - 16.00 WIB</p>
                     
                     <h4 style="margin-top: 20px;">Hotel Grand Mercure</h4>
-                    <p>[Nama Ballroom/Ruang], [Kota]<br>
-                    <a href="https://maps.google.com/?q=Hotel+Grand+Mercure" target="_blank" class="btn" style="margin-top: 15px; padding: 8px 20px; font-size: 0.9rem;">Lihat Lokasi</a>
-                    </p>
+                    <p>[Nama Ballroom/Ruang], [Kota]</p>
+                    
+                    <!-- Tambahan: Embed Google Maps -->
+                    <div style="margin: 15px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--warna-aksen);">
+                        <iframe src="https://www.google.com/maps?q=Hotel+Grand+Mercure&output=embed" width="100%" height="200" style="border:0; display: block;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+
+                    <a href="https://maps.google.com/?q=Hotel+Grand+Mercure" target="_blank" class="btn" style="padding: 8px 20px; font-size: 0.9rem;">Lihat Lokasi</a>
                 </div>
             </div>
         </section>
@@ -587,6 +593,14 @@
     <!-- JAVASCRIPT: LOGIKA UNDANGAN             -->
     <!-- ====================================== -->
     <script>
+        // Fix agar refresh selalu mulai dari awal (Cover)
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+
         // PENTING: Ganti URL di bawah dengan Web App URL dari Google Apps Script Anda
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx77bMX9n4QnDTKq-5cs6GSvv6yYh84DE3qYsy2kPPxwAfMC9zX38_OrMP7k9_qBP7Y/exec";
 
