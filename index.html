@@ -40,69 +40,68 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: var(--cream);
-            overflow: hidden;
+            background-color: #cfc9bc;
+            color: var(--emerald);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
         }
 
-        /* Desktop: tampil seperti mobile */
-        @media (min-width: 431px) {
-            body { background: #cfc9bc; }
-        }
-
-        body.scrollable { overflow-y: auto; }
-
-        /* === APP FRAME (430px max) === */
-        #appFrame {
-            max-width: var(--frame-w);
+        /* === FIXED BACKGROUND (diam saat scroll + overlay emerald buram) === */
+        #fixedBg {
+            position: fixed;
+            top: 0; left: 0; right: 0;
             margin: 0 auto;
-            min-height: 100dvh;
+            width: 100%; max-width: var(--frame-w);
+            height: 100%;
+            z-index: 0;
+            background-image: url('./adit&sekar.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        #fixedBg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(26, 56, 43, 0.88);
+            backdrop-filter: blur(2px);
+        }
+
+        /* === MOBILE FRAME === */
+        #appFrame {
+            width: 100%;
+            max-width: var(--frame-w);
+            background-color: transparent;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
             position: relative;
-            background: var(--cream);
-        }
-        @media (min-width: 431px) {
-            #appFrame {
-                box-shadow: 0 0 80px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.08);
-            }
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* === COVER === */
+        /* === COVER (mengikuti mekanisme referensi) === */
         #cover {
-            position: fixed; inset: 0; z-index: 9999;
-            background: #080a08;
-            display: flex; align-items: stretch; justify-content: center;
-            transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1),
-                        transform 0.9s cubic-bezier(0.22,1,0.36,1),
-                        visibility 0.9s ease;
-        }
-        #cover.hidden-cover {
-            opacity: 0;
-            transform: translateY(-100%);
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .cover-frame {
-            width: 100%; max-width: var(--frame-w); height: 100%;
-            background: linear-gradient(rgba(10,20,15,0.42), rgba(10,20,15,0.52)), url('./adit&sekar.png');
-            background-size: cover; background-position: center top;
-            display: flex; flex-direction: column;
-        }
-        @media (min-width: 431px) {
-            .cover-frame {
-                box-shadow: -30px 0 70px rgba(0,0,0,0.4), 30px 0 70px rgba(0,0,0,0.4);
-            }
-        }
-
-        .cover-inner {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: space-between;
-            width: 100%; height: 100%;
-            padding: 32px 24px 36px;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            margin: 0 auto;
+            width: 100%; max-width: var(--frame-w);
+            height: 100vh;
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 1s ease-in-out;
+            overflow: hidden;
         }
 
         /* === AUDIO TOGGLE === */
         #audioToggle {
-            position: fixed; top: 16px; right: 16px; z-index: 100;
+            position: fixed;
+            top: 20px;
+            right: max(20px, calc(50% - 215px + 20px));
+            z-index: 50;
             width: 44px; height: 44px; border-radius: 50%;
             background: var(--emerald); border: 2px solid var(--gold);
             color: var(--gold); display: none; align-items: center; justify-content: center;
@@ -111,9 +110,6 @@
         }
         #audioToggle:hover { transform: scale(1.1); }
         #audioToggle.active { display: flex; }
-        @media (min-width: 431px) {
-            #audioToggle { right: calc(50% - 199px); }
-        }
 
         /* === KUPU-KUPU === */
         .butterfly {
@@ -142,10 +138,10 @@
 
         /* === CORNER ORNAMEN (70px) === */
         .corner-card { position: relative; }
-        .corner-card .corner-tl { position: absolute; top: -5px; left: -5px; width: 70px; height: 70px; }
-        .corner-card .corner-tr { position: absolute; top: -5px; right: -5px; width: 70px; height: 70px; transform: scaleX(-1); }
-        .corner-card .corner-bl { position: absolute; bottom: -5px; left: -5px; width: 70px; height: 70px; transform: scaleY(-1); }
-        .corner-card .corner-br { position: absolute; bottom: -5px; right: -5px; width: 70px; height: 70px; transform: scale(-1); }
+        .corner-card .corner-tl { position: absolute; top: 5px; left: 5px; width: 70px; height: 70px; }
+        .corner-card .corner-tr { position: absolute; top: 5px; right: 5px; width: 70px; height: 70px; transform: scaleX(-1); }
+        .corner-card .corner-bl { position: absolute; bottom: 5px; left: 5px; width: 70px; height: 70px; transform: scaleY(-1); }
+        .corner-card .corner-br { position: absolute; bottom: 5px; right: 5px; width: 70px; height: 70px; transform: scale(-1); }
 
         /* === COUNTDOWN BOX === */
         .countdown-box {
@@ -213,7 +209,7 @@
         @media (prefers-reduced-motion: reduce) {
             .butterfly { animation: none !important; }
             .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
-            #cover { transition: opacity 0.01s !important; }
+            #cover { transition: none !important; }
         }
 
         /* === Scrollbar === */
@@ -222,42 +218,58 @@
         ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
     </style>
 </head>
-<body class="text-emerald-primary">
+<body>
 
-    <!-- Audio Element -->
-    <audio id="bgMusic" loop preload="auto">
-        <source src="./Jangan Berhenti Mencintaiku.mp3" type="audio/mpeg">
-    </audio>
+    <!-- FIXED BACKGROUND (diam saat scroll + overlay emerald buram) -->
+    <div id="fixedBg"></div>
 
-    <!-- Audio Toggle Button -->
-    <button id="audioToggle" aria-label="Toggle Musik" title="Toggle Musik">
-        <i class="fas fa-music"></i>
-    </button>
+    <!-- FRAME MOBILE VIEW -->
+    <div id="appFrame">
 
-    <!-- ============================== -->
-    <!--          COVER OVERLAY         -->
-    <!-- ============================== -->
-    <div id="cover">
-        <div class="cover-frame">
-            <div class="cover-inner">
+        <!-- AUDIO TOGGLE -->
+        <button id="audioToggle" aria-label="Toggle Musik" title="Toggle Musik">
+            <i class="fas fa-music"></i>
+        </button>
 
-                <!-- ATAS: Burung Dara (lebih besar) -->
-                <div class="pt-1">
+        <!-- AUDIO ELEMENT -->
+        <audio id="bgMusic" loop preload="auto">
+            <source src="./Jangan Berhenti Mencintaiku.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- TOAST NOTIFICATION -->
+        <div id="toast"></div>
+
+        <!-- ============================== -->
+        <!--          COVER / SPLASH        -->
+        <!-- ============================== -->
+        <section id="cover" style="background-color: #1A382B;">
+
+            <!-- Lapisan 0: Foto background -->
+            <img src="./adit&sekar.png" alt="Cover Background" class="absolute inset-0 w-full h-full object-cover z-0" style="filter: sepia(15%) contrast(105%);">
+
+            <!-- Lapisan 10: Overlay gelap transparan -->
+            <div class="absolute inset-0 z-10" style="background: linear-gradient(to bottom, rgba(26,56,43,0.82), rgba(26,56,43,0.92));"></div>
+
+            <!-- Lapisan 30: Konten cover -->
+            <div class="relative z-30 px-6 py-8 w-full flex flex-col items-center justify-between h-full">
+
+                <!-- ATAS: Burung Dara -->
+                <div class="pt-2">
                     <img src="./dove.png" alt="Burung Dara" class="mx-auto w-32 h-32 sm:w-40 sm:h-40 object-contain opacity-90" style="filter: brightness(0) invert(1) sepia(1) hue-rotate(5deg) saturate(0.6) brightness(1.2);">
                 </div>
 
-                <!-- TENGAH: Nama Mempelai & Tanggal -->
+                <!-- TENGAH: Nama & Tanggal -->
                 <div class="text-center flex-1 flex flex-col items-center justify-center gap-2 sm:gap-3 py-4">
                     <p class="font-sans text-white/70 text-[10px] sm:text-xs tracking-[5px] sm:tracking-[6px] uppercase">The Wedding of</p>
 
-                    <!-- Nama: Aditya / & / Sekar -->
                     <div class="leading-none">
-                        <span class="font-script text-white text-5xl sm:text-6xl block" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Aditya</span>
+                        <span class="font-script text-white text-5xl sm:text-6xl block drop-shadow-lg" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Aditya</span>
                         <span class="font-script text-gold-primary text-3xl sm:text-4xl block my-1" style="text-shadow: 0 2px 15px rgba(0,0,0,0.2);">&amp;</span>
-                        <span class="font-script text-white text-5xl sm:text-6xl block" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Sekar</span>
+                        <span class="font-script text-white text-5xl sm:text-6xl block drop-shadow-lg" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Sekar</span>
                     </div>
 
-                    <p class="font-serif text-white/85 text-sm sm:text-base tracking-[3px] sm:tracking-[4px] uppercase font-light mt-2">Kamis, 1 April 2027</p>
+                    <p class="font-serif text-gold-primary text-sm sm:text-base tracking-[3px] sm:tracking-[4px] uppercase font-light mt-2">Kamis, 1 April 2027</p>
+
                     <div>
                         <img src="./divider-cover.png" alt="Divider" class="mx-auto w-36 sm:w-44 object-contain opacity-55" style="filter: brightness(0) invert(1) opacity(0.55);">
                     </div>
@@ -269,42 +281,32 @@
                         <p class="font-sans text-white/55 text-[10px] sm:text-xs tracking-[2px] uppercase mb-0.5">Kepada Yth.</p>
                         <p class="font-sans text-white/55 text-[10px] sm:text-xs tracking-[2px] uppercase">Bapak/Ibu/Saudara/i</p>
                     </div>
-                    <button id="btnBuka" class="font-sans text-xs sm:text-sm tracking-[3px] sm:tracking-[4px] uppercase font-semibold px-10 sm:px-12 py-3 sm:py-3.5 rounded-full border-2 border-gold-primary text-gold-primary bg-transparent hover:bg-gold-primary hover:text-emerald-primary transition-all duration-500 cursor-pointer" style="text-shadow: 0 0 10px rgba(197,168,128,0.3);">
-                        Buka Undangan
+                    <button id="btnBuka" class="font-sans text-xs sm:text-sm tracking-[3px] sm:tracking-[4px] uppercase font-semibold px-10 sm:px-12 py-3 sm:py-3.5 rounded-full transition duration-300 shadow-lg text-white cursor-pointer" style="background: linear-gradient(to right, #1A382B, #2A5040); border: 1px solid #C5A880;">
+                        <i class="fas fa-envelope-open mr-2"></i> Buka Undangan
                     </button>
                 </div>
 
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- ============================== -->
-    <!--        KUPU-KUPU CONTAINER     -->
-    <!-- ============================== -->
-    <div id="butterflyContainer"></div>
-
-    <!-- ============================== -->
-    <!--         MAIN CONTENT          -->
-    <!-- ============================== -->
-    <div id="appFrame">
-        <main id="mainContent" class="relative">
+        <!-- ============================== -->
+        <!--         MAIN CONTENT          -->
+        <!-- ============================== -->
+        <main id="mainContent" class="hidden relative">
 
             <!-- ====== SECTION 1: AYAT ====== -->
             <section id="ayat" class="bg-emerald-primary py-16 sm:py-24 px-6 relative overflow-hidden">
                 <div class="absolute inset-0 opacity-5 diagonal-pattern"></div>
                 <div class="max-w-sm mx-auto text-center relative z-10 reveal">
-                    <!-- Divider Atas -->
                     <div class="mb-10">
                         <img src="./divider-ayat.png" alt="Divider Ayat" class="mx-auto w-36 sm:w-40 object-contain opacity-50" style="filter: brightness(0) invert(1) sepia(1) hue-rotate(5deg) saturate(0.4) brightness(1.4);">
                     </div>
-                    <!-- Ayat -->
                     <p class="font-serif text-cream text-xl sm:text-2xl italic leading-relaxed mb-5">
                         "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan-pasangan dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang."
                     </p>
                     <p class="font-sans text-gold-primary text-sm tracking-[2px] uppercase font-semibold mb-10">
                         Q.S. Ar-Rum: 21
                     </p>
-                    <!-- Divider Bawah (dibalik/flip horizontal) -->
                     <div>
                         <img src="./divider-ayat.png" alt="Divider Ayat" class="mx-auto w-36 sm:w-40 object-contain opacity-50" style="filter: brightness(0) invert(1) sepia(1) hue-rotate(5deg) saturate(0.4) brightness(1.4); transform: scaleX(-1);">
                     </div>
@@ -319,7 +321,6 @@
                         <h2 class="font-serif text-emerald-primary text-3xl sm:text-4xl font-bold mb-2">Pasangan Bahagia</h2>
                         <div class="gold-line mx-auto"></div>
                     </div>
-                    <!-- Mempelai Pria -->
                     <div class="reveal reveal-delay-1 mb-12">
                         <div class="profile-ring mx-auto mb-5">
                             <img src="./adit.png" alt="Aditya Permana">
@@ -332,11 +333,9 @@
                             <span class="font-semibold text-emerald-primary">Ibu Siti Aminah</span>
                         </p>
                     </div>
-                    <!-- Ampersand -->
                     <div class="reveal mb-12">
                         <span class="font-script text-gold-accent text-5xl">&amp;</span>
                     </div>
-                    <!-- Mempelai Wanita -->
                     <div class="reveal reveal-delay-2">
                         <div class="profile-ring mx-auto mb-5">
                             <img src="./sekar.png" alt="Sekar Asih">
@@ -392,15 +391,11 @@
                         <p class="font-sans text-gold-accent text-xs tracking-[4px] uppercase mb-2">Save The Date</p>
                         <h2 class="font-serif text-emerald-primary text-3xl sm:text-4xl font-bold">Kamis, 1 April 2027</h2>
                     </div>
-
-                    <!-- Card Acara + Corner Ornamen (70px) -->
                     <div class="reveal reveal-delay-1 corner-card bg-white rounded-xl p-8 sm:p-10 mb-8 shadow-lg border border-gold-light/30">
                         <img src="./corner.png" alt="" class="corner-tl object-contain">
                         <img src="./corner.png" alt="" class="corner-tr object-contain">
                         <img src="./corner.png" alt="" class="corner-bl object-contain">
                         <img src="./corner.png" alt="" class="corner-br object-contain">
-
-                        <!-- Akad Nikah -->
                         <div class="mb-8">
                             <div class="w-10 h-10 mx-auto mb-3 rounded-full bg-gold-primary/10 flex items-center justify-center">
                                 <i class="fas fa-ring text-gold-accent text-lg"></i>
@@ -412,14 +407,11 @@
                                 <i class="far fa-clock text-gold-accent mr-2"></i>08.00 - 10.00 WIB
                             </p>
                         </div>
-
                         <div class="flex items-center justify-center gap-3 mb-8">
                             <div class="w-16 h-px bg-gold-primary/30"></div>
                             <i class="fas fa-heart text-gold-accent text-xs"></i>
                             <div class="w-16 h-px bg-gold-primary/30"></div>
                         </div>
-
-                        <!-- Resepsi -->
                         <div class="mb-6">
                             <div class="w-10 h-10 mx-auto mb-3 rounded-full bg-gold-primary/10 flex items-center justify-center">
                                 <i class="fas fa-champagne-glasses text-gold-accent text-lg"></i>
@@ -431,7 +423,6 @@
                                 <i class="far fa-clock text-gold-accent mr-2"></i>11.00 - 16.00 WIB
                             </p>
                         </div>
-
                         <div class="pt-4 border-t border-gold-primary/15">
                             <p class="font-serif text-emerald-primary text-lg font-semibold mb-1">Hotel Grand Mercure</p>
                             <p class="font-sans text-emerald-primary/70 text-sm leading-relaxed">
@@ -440,8 +431,6 @@
                             </p>
                         </div>
                     </div>
-
-                    <!-- Google Maps -->
                     <div class="reveal reveal-delay-2 mb-5 rounded-xl overflow-hidden shadow-md border border-gold-light/30">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.8!2d112.6308!3d-7.9784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7856cc00000001%3A0x1!2sHotel+Grand+Mercure+Malang!5e0!3m2!1sid!2sid!4v1"
@@ -449,7 +438,6 @@
                             referrerpolicy="no-referrer-when-downgrade" title="Lokasi Wedding">
                         </iframe>
                     </div>
-
                     <div class="reveal reveal-delay-3">
                         <a href="https://maps.google.com/?q=Hotel+Grand+Mercure+Malang" target="_blank" rel="noopener noreferrer"
                            class="inline-flex items-center gap-2 font-sans text-sm tracking-[2px] uppercase font-semibold px-8 py-3 rounded-full border-2 border-emerald-primary text-emerald-primary bg-transparent hover:bg-emerald-primary hover:text-white transition-all duration-400">
@@ -467,7 +455,6 @@
                         <h2 class="font-serif text-emerald-primary text-3xl sm:text-4xl font-bold mb-2">Wilujeng Sumping</h2>
                         <div class="gold-line mx-auto"></div>
                     </div>
-
                     <div class="reveal reveal-delay-1 bg-white rounded-xl p-6 sm:p-8 shadow-md border border-gold-light/30 mb-8">
                         <form id="rsvpForm" class="space-y-4" novalidate>
                             <div>
@@ -489,7 +476,6 @@
                             </button>
                         </form>
                     </div>
-
                     <div class="reveal reveal-delay-2">
                         <div id="ucapanList" class="space-y-4"></div>
                         <div id="ucapanLoading" class="text-center py-8">
@@ -523,10 +509,11 @@
             </footer>
 
         </main>
+
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast"></div>
+    <!-- KUPU-KUPU CONTAINER -->
+    <div id="butterflyContainer"></div>
 
     <!-- ============================== -->
     <!--         JAVASCRIPT            -->
@@ -535,23 +522,25 @@
         /* ===========================
            KONFIGURASI & VARIABEL
         =========================== */
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbx77bMX9n4QnDTKq-5cs6GSvv6yYh84DE3qYsy2kPPxwAfMC9zX38_OrMP7k9_qBP7Y.exec";
-        const WEDDING_DATE = new Date('2027-04-01T08:00:00+07:00');
-        const FRAME_MAX_W = 430;
-        let isMusicPlaying = false;
+        var GAS_URL = "https://script.google.com/macros/s/AKfycbx77bMX9n4QnDTKq-5cs6GSvv6yYh84DE3qYsy2kPPxwAfMC9zX38_OrMP7k9_qBP7Y.exec";
+        var WEDDING_DATE = new Date('2027-04-01T08:00:00+07:00');
+        var FRAME_MAX_W = 430;
+        var isMusicPlaying = false;
 
         /* ===========================
            DOM REFERENCES
         =========================== */
-        const cover = document.getElementById('cover');
-        const btnBuka = document.getElementById('btnBuka');
-        const bgMusic = document.getElementById('bgMusic');
-        const audioToggle = document.getElementById('audioToggle');
-        const rsvpForm = document.getElementById('rsvpForm');
-        const ucapanList = document.getElementById('ucapanList');
-        const ucapanLoading = document.getElementById('ucapanLoading');
-        const ucapanEmpty = document.getElementById('ucapanEmpty');
-        const toastEl = document.getElementById('toast');
+        var cover = document.getElementById('cover');
+        var btnBuka = document.getElementById('btnBuka');
+        var bgMusic = document.getElementById('bgMusic');
+        var audioToggle = document.getElementById('audioToggle');
+        var audioIcon = audioToggle.querySelector('i');
+        var mainContent = document.getElementById('mainContent');
+        var rsvpForm = document.getElementById('rsvpForm');
+        var ucapanList = document.getElementById('ucapanList');
+        var ucapanLoading = document.getElementById('ucapanLoading');
+        var ucapanEmpty = document.getElementById('ucapanEmpty');
+        var toastEl = document.getElementById('toast');
 
         /* ===========================
            TOAST
@@ -564,41 +553,63 @@
         }
 
         /* ===========================
-           COVER & BUKA UNDANGAN
+           BUKA UNDANGAN (mengikuti mekanisme referensi)
+           1. Cover slide up via transform
+           2. Setelah 1 detik, cover display:none & mainContent tampil
+           3. Musik diputar, scroll ke atas
         =========================== */
         btnBuka.addEventListener('click', function() {
-            cover.classList.add('hidden-cover');
-            document.body.classList.add('scrollable');
-            audioToggle.classList.add('active');
-            playMusic();
-            createButterflies();
-            setTimeout(triggerReveals, 400);
+            // Slide cover ke atas
+            cover.style.transform = "translateY(-100%)";
+
+            setTimeout(function() {
+                // Sembunyikan cover sepenuhnya
+                cover.style.display = 'none';
+
+                // Tampilkan main content
+                mainContent.classList.remove('hidden');
+
+                // Aktifkan musik
+                audioToggle.classList.add('active');
+                bgMusic.play().then(function() {
+                    isMusicPlaying = true;
+                    audioIcon.classList.remove('fa-music');
+                    audioIcon.classList.add('fa-pause');
+                }).catch(function(err) {
+                    console.log("Autoplay blocked:", err);
+                    isMusicPlaying = false;
+                });
+
+                // Buat kupu-kupu
+                createButterflies();
+
+                // Scroll ke atas
+                window.scrollTo(0, 0);
+
+                // Trigger scroll reveal
+                setTimeout(triggerReveals, 300);
+            }, 1000);
         });
 
         /* ===========================
-           AUDIO
+           AUDIO TOGGLE (ganti ikon, tanpa muter)
         =========================== */
-        function playMusic() {
-            bgMusic.play().then(function() {
-                isMusicPlaying = true;
-                audioToggle.innerHTML = '<i class="fas fa-music"></i>';
-            }).catch(function() {
-                isMusicPlaying = false;
-                audioToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            });
-        }
-        function pauseMusic() {
-            bgMusic.pause();
-            isMusicPlaying = false;
-            audioToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-        }
         audioToggle.addEventListener('click', function() {
-            if (isMusicPlaying) { pauseMusic(); } else { playMusic(); }
+            if (bgMusic.paused) {
+                bgMusic.play();
+                audioIcon.classList.remove('fa-music');
+                audioIcon.classList.add('fa-pause');
+                isMusicPlaying = true;
+            } else {
+                bgMusic.pause();
+                audioIcon.classList.remove('fa-pause');
+                audioIcon.classList.add('fa-music');
+                isMusicPlaying = false;
+            }
         });
 
         /* ===========================
            KUPU-KUPU
-           Posisi dikonstrain ke area frame (430px)
         =========================== */
         function createButterflies() {
             var container = document.getElementById('butterflyContainer');
@@ -674,7 +685,6 @@
             }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
             reveals.forEach(function(el) { observer.observe(el); });
         }
-        triggerReveals();
 
         /* ===========================
            RSVP - FETCH (GET)
