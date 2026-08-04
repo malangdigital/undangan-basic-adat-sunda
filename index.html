@@ -147,13 +147,13 @@
         .bg-ornament {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url(''); /* Kosongkan dulu, isi nanti jika ada PNG */
             background-size: 300px;
             background-repeat: no-repeat;
             background-position: center;
             opacity: 0.05;
             z-index: 0;
             pointer-events: none;
+            /* HAPUS baris background-image: url(''); agar tidak ada layer gelap */
         }
         .content-zindex {
             position: relative;
@@ -176,7 +176,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            transition: transform 1s ease-in-out;
+            transition: transform 1s ease-in-out, opacity 0.8s ease-in-out;
             overflow: hidden;
             
             /* GANTI URL DI BAWAH DENGAN URL FOTO PREWEDDING ANDA */
@@ -462,23 +462,21 @@
         <!-- 1. SECTION: HALAMAN COVER / PEMBUKA     -->
         <!-- ====================================== -->
         <section id="cover">
-            <div class="cover-content" style="width: 100%; padding: 40px 20px;">
-                <!-- ASET: Ornamen di atas halaman cover -->
-                <img src="dove.png" alt="Ornamen Atas Cover" style="width: 140px; margin-bottom: 20px;">
+            <div class="cover-content">
+                <img src="dove.png" alt="Ornamen Atas Cover" style="width: 130px; margin-bottom: 15px;">
                 
-                <p class="intro-text" style="font-size: 1.6rem; margin-bottom: 10px;">The Wedding of</p>
+                <p class="intro-text" style="font-size: 1.4rem; margin-bottom: 10px;">The Wedding of</p>
                 
-                <h1 style="font-size: 4rem; line-height: 1.1; margin: 5px 0;">Aditya <span class="ampersand">&</span> Sekar</h1>
+                <h1 style="font-family: var(--font-judul); font-size: 3.5rem; line-height: 1.1; margin: 5px 0; font-weight: 700; color: var(--warna-dasar);">Aditya <span class="ampersand" style="color: var(--warna-aksen); font-style: italic;">&</span> Sekar</h1>
                 
-                <p style="font-size: 1.1rem; margin-top: 15px;">KAMIS, 1 APRIL 2027</p>
+                <p style="font-size: 1.1rem; margin-top: 15px; letter-spacing: 2px;">KAMIS, 1 APRIL 2027</p>
                 
-                <!-- ASET: Ornamen Divider antara tanggal dan Kepada Yth -->
-                <img src="divider-cover.png" alt="Ornamen Divider" style="width: 90%; max-width: 350px; margin: 20px 0;">
+                <img src="divider-cover.png" alt="Ornamen Divider" style="width: 90%; max-width: 320px; margin: 20px 0;">
                 
-                <p style="font-size: 0.9rem; margin-bottom: 5px;">Kepada Yth.</p>
-                <p style="font-family: var(--font-judul); font-size: 1.4rem; margin-bottom: 30px;">Bapak/Ibu/Saudara/i</p>
+                <p style="font-size: 0.9rem; margin-bottom: 5px; letter-spacing: 1px;">Kepada Yth.</p>
+                <p id="guestNameCover" style="font-family: var(--font-judul); font-size: 1.3rem; margin-bottom: 30px; font-weight: 600;">Bapak/Ibu/Saudara/i</p>
                 
-                <button class="btn" onclick="openInvitation()" style="font-size: 1rem; padding: 14px 40px;">Buka Undangan</button>
+                <button class="btn" onclick="openInvitation()" style="font-size: 1rem; padding: 12px 35px;">Buka Undangan</button>
             </div>
         </section>
 
@@ -659,6 +657,13 @@
         }
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
+            // Reset cover ke posisi awal jika halaman di-refresh
+            const cover = document.getElementById('cover');
+            if (cover) {
+                cover.style.display = 'flex';
+                cover.style.transform = "translateY(0)";
+                cover.style.opacity = "1";
+            }
         });
 
         // PENTING: Ganti URL di bawah dengan Web App URL dari Google Apps Script Anda
@@ -671,8 +676,9 @@
         function openInvitation() {
             const cover = document.getElementById('cover');
             
-            // Animasi Cover ke atas
+            // Animasi Cover ke atas & pudar
             cover.style.transform = "translateY(-100%)";
+            cover.style.opacity = "0";
             
             // Tampilkan konten utama & mainkan musik
             setTimeout(() => {
