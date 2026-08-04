@@ -693,7 +693,7 @@
             ucapanEmpty.classList.add('hidden');
             ucapanList.innerHTML = '';
 
-            fetch(GAS_URL, { redirect: 'follow', mode: 'cors' })
+            fetch(GAS_URL)
                 .then(function(response) {
                     if (!response.ok) throw new Error('Gagal memuat');
                     return response.json();
@@ -717,7 +717,7 @@
                         var badgeIcon = 'fa-check-circle';
                         if (entry.kehadiran === 'Tidak Hadir') {
                             badgeClass = 'bg-red-50 text-red-600'; badgeIcon = 'fa-times-circle';
-                        } else if (entry.kehadiran === 'Masih Ragu') {
+                        } else if (entry.kehadiran === 'Mas?Ragu') {
                             badgeClass = 'bg-amber-50 text-amber-600'; badgeIcon = 'fa-question-circle';
                         }
 
@@ -772,28 +772,24 @@
             btnKirim.disabled = true;
             btnKirim.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Mengirim...';
 
-fetch(GAS_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ nama: nama, kehadiran: kehadiran, ucapan: ucapan })
-})
-.then(function() {
-    // mode: 'no-cors' → response opaque, tidak bisa dibaca
-    // Anggap berhasil karena tidak ada error thrown
-    rsvpForm.reset();
-    showToast('Terima kasih! Ucapan Anda berhasil dikirim.', 4000);
-    fetchUcapan();
-})
-.catch(function(err) {
-    console.error('Error:', err);
-    showToast('Gagal mengirim. Silakan coba lagi.');
-})
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ nama: nama, kehadiran: kehadiran, ucapan: ucapan })
             })
-            .finally(function() {
-                btnKirim.disabled = false;
-                btnKirim.innerHTML = '<i class="fas fa-paper-plane text-xs"></i> Kirim Ucapan';
+            .then(function() {
+                rsvpForm.reset();
+                showToast('Terima kasih! Ucapan Anda berhasil dikirim.', 4000);
+                fetchUcapan();
+            })
+            .catch(function(err) {
+                console.error('Error:', err);
+                showToast('Gagal mengirim. Silakan coba lagi.');
             });
+
+            btnKirim.disabled = false;
+            btnKirim.innerHTML = '<i class="fas fa-paper-plane text-xs"></i> Kirim Ucapan';
         });
 
         /* ===========================
