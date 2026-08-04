@@ -268,27 +268,34 @@
 
                 <!-- TENGAH: Nama & Tanggal -->
                 <div class="text-center flex-1 flex flex-col items-center justify-center gap-2 sm:gap-3 py-4">
-                    <p class="font-sans text-white/70 text-[10px] sm:text-xs tracking-[5px] sm:tracking-[6px] uppercase">The Wedding of</p>
+                    <!-- Ukuran diperbesar dari text-[10px] menjadi text-xs -->
+                    <p class="font-sans text-white/70 text-xs sm:text-sm tracking-[5px] sm:tracking-[6px] uppercase">The Wedding of</p>
 
-                    <div class="leading-none">
-                        <span class="font-script text-white text-5xl sm:text-6xl block drop-shadow-lg" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Aditya</span>
-                        <span class="font-script text-gold-primary text-3xl sm:text-4xl block my-1" style="text-shadow: 0 2px 15px rgba(0,0,0,0.2);">&amp;</span>
-                        <span class="font-script text-white text-5xl sm:text-6xl block drop-shadow-lg" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Sekar</span>
+                    <div class="leading-none mt-2 mb-2">
+                        <!-- Nama diperbesar dari text-5xl menjadi text-6xl (bahkan text-7xl di layar besar) -->
+                        <span class="font-script text-white text-6xl sm:text-7xl block drop-shadow-lg" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Aditya</span>
+                        <!-- Simbol & diperbesar dari text-3xl menjadi text-4xl -->
+                        <span class="font-script text-gold-primary text-4xl sm:text-5xl block my-2" style="text-shadow: 0 2px 15px rgba(0,0,0,0.2);">&amp;</span>
+                        <!-- Nama diperbesar dari text-5xl menjadi text-6xl -->
+                        <span class="font-script text-white text-6xl sm:text-7xl block drop-shadow-lg" style="text-shadow: 0 2px 25px rgba(0,0,0,0.3);">Sekar</span>
                     </div>
 
-                    <p class="font-serif text-gold-primary text-sm sm:text-base tracking-[3px] sm:tracking-[4px] uppercase font-light mt-2">Kamis, 1 April 2027</p>
+                    <!-- Tanggal diperbesar dari text-sm menjadi text-base -->
+                    <p class="font-serif text-gold-primary text-base sm:text-lg tracking-[3px] sm:tracking-[4px] uppercase font-light mt-3">Kamis, 1 April 2027</p>
 
-                    <div>
+                    <div class="mt-2">
                         <img src="./divider-cover.png" alt="Divider" class="mx-auto w-36 sm:w-44 object-contain opacity-55" style="filter: brightness(0) invert(1) opacity(0.55);">
                     </div>
                 </div>
 
-                <!-- Ubah mb-8 menjadi mb-20 atau mb-24 agar lebih naik ke atas -->
+                <!-- Bagian Bawah (Yth dan Tombol) -->
                 <div class="text-center space-y-4 mb-20 sm:mb-24 pb-4">
                     <div>
-                        <p class="font-sans text-white/55 text-[10px] sm:text-xs tracking-[2px] uppercase mb-0.5">Kepada Yth.</p>
-                        <p class="font-sans text-white/55 text-[10px] sm:text-xs tracking-[2px] uppercase">Bapak/Ibu/Saudara/i</p>
+                        <!-- Teks Kepada Yth diperbesar dari text-[10px] menjadi text-xs -->
+                        <p class="font-sans text-white/55 text-xs sm:text-sm tracking-[2px] uppercase mb-0.5">Kepada Yth.</p>
+                        <p class="font-sans text-white/55 text-xs sm:text-sm tracking-[2px] uppercase">Bapak/Ibu/Saudara/i</p>
                     </div>
+                    <!-- Ukuran font tombol Buka Undangan TETAP tidak diubah (text-xs sm:text-sm) -->
                     <button id="btnBuka" class="font-sans text-xs sm:text-sm tracking-[3px] sm:tracking-[4px] uppercase font-semibold px-10 sm:px-12 py-3 sm:py-3.5 rounded-full transition duration-300 shadow-lg text-white cursor-pointer" style="background: linear-gradient(to right, #1A382B, #2A5040); border: 1px solid #C5A880;">
                         <i class="fas fa-envelope-open mr-2"></i> Buka Undangan
                     </button>
